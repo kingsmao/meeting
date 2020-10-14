@@ -22,7 +22,8 @@ public class MeetingServiceTest {
     private MeetingService meetingService;
 
     @Test
-    public void t1(){
+    public void t1() {
         List<Meeting> all = meetingService.findAll(new MeetingExample());
+        System.out.println(all);
     }
 }
