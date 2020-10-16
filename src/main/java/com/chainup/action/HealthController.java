@@ -15,6 +15,6 @@ public class HealthController {
     @GetMapping("/health")
     public String health(){
         log.info("OOOOOOOOOOOKKKKKKKKKKKKKKKKKKK");
-        return "你瞅啥？";
+        return "你瞅啥？？？？？？？？？？？？";
     }
 }
