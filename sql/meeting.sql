@@ -6,7 +6,7 @@ CREATE TABLE `meeting` (
   `department_id` int NOT NULL COMMENT '参会部门id',
   `begin_time` timestamp NOT NULL COMMENT '会议开始时间',
   `end_time` timestamp NOT NULL COMMENT '会议结束时间',
-  `status` tinyint NOT NULL DEFAULT '0' COMMENT '0=未预定；1=进行中；2=已结束',
+  `status` tinyint NOT NULL DEFAULT '0' COMMENT '0=未开始；1=进行中；2=已结束',
   `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)

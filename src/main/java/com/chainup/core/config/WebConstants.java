@@ -1,4 +1,4 @@
-package com.chainup.config;
+package com.chainup.core.config;
 
 /**
  *

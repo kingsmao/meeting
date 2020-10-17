@@ -1,6 +1,8 @@
 package com.chainup.service.impl;
 
+import com.chainup.dao.DepartmentMapper;
 import com.chainup.dao.MeetingMapper;
+import com.chainup.dao.RoomMapper;
 import com.chainup.entity.Meeting;
 import com.chainup.entity.MeetingExample;
 import com.chainup.service.MeetingService;
@@ -18,6 +20,12 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Autowired
     private MeetingMapper meetingMapper;
+
+    @Autowired
+    private RoomMapper roomMapper;
+
+    @Autowired
+    private DepartmentMapper departmentMapper;
 
     @Override
     public List<Meeting> findAll(MeetingExample example) {

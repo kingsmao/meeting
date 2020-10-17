@@ -1,13 +1,19 @@
 package com.chainup.action;
 
+import com.chainup.core.config.RequestResult;
+import com.chainup.core.dto.MeetingRoomDto;
+import com.chainup.core.dto.MeetingRoomExtDto;
+import com.chainup.core.params.ReserveMeetingParams;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static com.chainup.config.WebConstants.API_STATUS_DEVELOPING;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.chainup.core.config.WebConstants.API_STATUS_DEVELOPING;
 
 /**
  * @author lili
@@ -18,7 +24,7 @@ import static com.chainup.config.WebConstants.API_STATUS_DEVELOPING;
 @Slf4j
 @RestController
 @Api(value = "MeetingContoller", description = "会议室API 0/6")
-public class MeetingContoller {
+public class MeetingContoller extends BaseController {
     /**
      * 1.通过时间查找可用会议室
      *
@@ -26,8 +32,13 @@ public class MeetingContoller {
      */
     @ApiOperation(value = "通过时间查找可用会议室" + API_STATUS_DEVELOPING, httpMethod = "GET")
     @GetMapping("/availableRoomByTime")
-    public String availableRoomByTime() {
-        return null;
+    public RequestResult<List<MeetingRoomDto>> availableRoomByTime(@ApiParam(name = "beginTime", value = "开始时间")
+                                                                   @RequestParam(name = "beginTime") String beginTime,
+                                                                   @ApiParam(name = "endTime", value = "结束时间")
+                                                                   @RequestParam(name = "endTime") String endTime) {
+
+        List<MeetingRoomDto> data = new ArrayList<>();
+        return success(data);
     }
 
 
@@ -38,10 +49,15 @@ public class MeetingContoller {
      * 部门下拉列表
      * 参数 时间+room_id传回去
      */
-    @ApiOperation(value = "会议室预定前的详情" + API_STATUS_DEVELOPING, httpMethod = "GET")
+    @ApiOperation(value = "某个会议室预定前的详情" + API_STATUS_DEVELOPING, httpMethod = "GET")
     @GetMapping("/meetingRoomInfo")
-    public String meetingRoomInfo() {
-        return null;
+    public RequestResult<MeetingRoomExtDto> meetingRoomInfo(@ApiParam(name = "beginTime", value = "开始时间")
+                                                            @RequestParam(name = "beginTime") String beginTime,
+                                                            @ApiParam(name = "endTime", value = "结束时间")
+                                                            @RequestParam(name = "endTime") String endTime,
+                                                            @ApiParam(name = "roomId", value = "房间id")
+                                                            @RequestParam(name = "roomId") int roomId) {
+        return success(new MeetingRoomExtDto());
     }
 
 
@@ -52,21 +68,22 @@ public class MeetingContoller {
      */
     @PostMapping("/reserveMeetingRoom")
     @ApiOperation(value = "预定会议室" + API_STATUS_DEVELOPING, httpMethod = "POST")
-    public String reserveMeetingRoom() {
-        return null;
+    public RequestResult<Void> reserveMeetingRoom(@RequestBody ReserveMeetingParams reserveMeetingParams) {
+        return success();
     }
 
 
     /**
      * 4.我的预定会议室
      *
-     * @param open_id
      * @return
      */
     @GetMapping("/myMeetingList")
     @ApiOperation(value = "我预定的会议室列表" + API_STATUS_DEVELOPING, httpMethod = "GET")
-    public String myMeetingList(String open_id) {
-        return null;
+    public RequestResult<List<MeetingRoomExtDto>> myMeetingList(@ApiParam(name = "openId", value = "用户Id")
+                                                                @RequestParam(name = "openId") String openId) {
+        List<MeetingRoomExtDto> data = new ArrayList<>();
+        return success(data);
     }
 
 
@@ -78,8 +95,11 @@ public class MeetingContoller {
      */
     @GetMapping("/myMeetingDetail")
     @ApiOperation(value = "我预定的会议室详情" + API_STATUS_DEVELOPING, httpMethod = "GET")
-    public String myMeetingDetail() {
-        return null;
+    public RequestResult<MeetingRoomExtDto> myMeetingDetail(@ApiParam(name = "openId", value = "用户Id")
+                                                            @RequestParam(name = "openId") String openId,
+                                                            @ApiParam(name = "meetingId", value = "会议Id")
+                                                            @RequestParam(name = "meetingId") int meetingId) {
+        return success(new MeetingRoomExtDto());
     }
 
 
@@ -90,8 +110,12 @@ public class MeetingContoller {
      */
     @PostMapping("/cancelMeetingRoom")
     @ApiOperation(value = "取消我的预定" + API_STATUS_DEVELOPING, httpMethod = "POST")
-    public String cancelMeetingRoom() {
-        return null;
+    public RequestResult<Void> cancelMeetingRoom(@ApiParam(name = "openId", value = "用户Id")
+                                                 @RequestParam(name = "openId") String openId,
+                                                 @ApiParam(name = "meetingId", value = "会议Id")
+                                                 @RequestParam(name = "meetingId") int meetingId) {
+
+        return success();
     }
 
 

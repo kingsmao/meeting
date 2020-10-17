@@ -1,4 +1,4 @@
-package com.chainup.config;
+package com.chainup.core.config;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
