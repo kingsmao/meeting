@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.chainup.dao.MeetingMapper" >
-  <resultMap id="BaseResultMap" type="com.chainup.entity.Meeting" >
+<mapper namespace="com.chainup.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.chainup.entity.User" >
     <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="name" property="name" jdbcType="VARCHAR" />
-    <result column="user_id" property="userId" jdbcType="INTEGER" />
-    <result column="room_id" property="roomId" jdbcType="INTEGER" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="department_id" property="departmentId" jdbcType="INTEGER" />
-    <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
-    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
-    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
     <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
     <result column="mtime" property="mtime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -72,15 +68,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, user_id, room_id, department_id, begin_time, end_time, status, ctime, mtime
+    id, open_id, department_id, user_name, ctime, mtime
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.chainup.entity.MeetingExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.chainup.entity.UserExample" >
     select
     <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from meeting
+    from user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
@@ -94,55 +90,41 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from meeting
+    from user
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from meeting
+    delete from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.chainup.entity.MeetingExample" >
-    delete from meeting
+  <delete id="deleteByExample" parameterType="com.chainup.entity.UserExample" >
+    delete from user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.chainup.entity.Meeting" >
-    insert into meeting (id, name, user_id, 
-      room_id, department_id, begin_time, 
-      end_time, status, ctime, 
-      mtime)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER}, 
-      #{roomId,jdbcType=INTEGER}, #{departmentId,jdbcType=INTEGER}, #{beginTime,jdbcType=TIMESTAMP}, 
-      #{endTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT}, #{ctime,jdbcType=TIMESTAMP}, 
-      #{mtime,jdbcType=TIMESTAMP})
+  <insert id="insert" parameterType="com.chainup.entity.User" >
+    insert into user (id, open_id, department_id, 
+      user_name, ctime, mtime
+      )
+    values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, 
+      #{userName,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP}, #{mtime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.chainup.entity.Meeting" >
-    insert into meeting
+  <insert id="insertSelective" parameterType="com.chainup.entity.User" >
+    insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
         id,
       </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="userId != null" >
-        user_id,
-      </if>
-      <if test="roomId != null" >
-        room_id,
+      <if test="openId != null" >
+        open_id,
       </if>
       <if test="departmentId != null" >
         department_id,
       </if>
-      <if test="beginTime != null" >
-        begin_time,
-      </if>
-      <if test="endTime != null" >
-        end_time,
-      </if>
-      <if test="status != null" >
-        status,
+      <if test="userName != null" >
+        user_name,
       </if>
       <if test="ctime != null" >
         ctime,
@@ -155,26 +137,14 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null" >
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="roomId != null" >
-        #{roomId,jdbcType=INTEGER},
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
       </if>
       <if test="departmentId != null" >
         #{departmentId,jdbcType=INTEGER},
       </if>
-      <if test="beginTime != null" >
-        #{beginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endTime != null" >
-        #{endTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=TINYINT},
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
       </if>
       <if test="ctime != null" >
         #{ctime,jdbcType=TIMESTAMP},
@@ -184,38 +154,26 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.chainup.entity.MeetingExample" resultType="java.lang.Integer" >
-    select count(*) from meeting
+  <select id="countByExample" parameterType="com.chainup.entity.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map" >
-    update meeting
+    update user
     <set >
       <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.name != null" >
-        name = #{record.name,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userId != null" >
-        user_id = #{record.userId,jdbcType=INTEGER},
-      </if>
-      <if test="record.roomId != null" >
-        room_id = #{record.roomId,jdbcType=INTEGER},
+      <if test="record.openId != null" >
+        open_id = #{record.openId,jdbcType=VARCHAR},
       </if>
       <if test="record.departmentId != null" >
         department_id = #{record.departmentId,jdbcType=INTEGER},
       </if>
-      <if test="record.beginTime != null" >
-        begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.endTime != null" >
-        end_time = #{record.endTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.status != null" >
-        status = #{record.status,jdbcType=TINYINT},
+      <if test="record.userName != null" >
+        user_name = #{record.userName,jdbcType=VARCHAR},
       </if>
       <if test="record.ctime != null" >
         ctime = #{record.ctime,jdbcType=TIMESTAMP},
@@ -229,44 +187,28 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map" >
-    update meeting
+    update user
     set id = #{record.id,jdbcType=INTEGER},
-      name = #{record.name,jdbcType=VARCHAR},
-      user_id = #{record.userId,jdbcType=INTEGER},
-      room_id = #{record.roomId,jdbcType=INTEGER},
+      open_id = #{record.openId,jdbcType=VARCHAR},
       department_id = #{record.departmentId,jdbcType=INTEGER},
-      begin_time = #{record.beginTime,jdbcType=TIMESTAMP},
-      end_time = #{record.endTime,jdbcType=TIMESTAMP},
-      status = #{record.status,jdbcType=TINYINT},
+      user_name = #{record.userName,jdbcType=VARCHAR},
       ctime = #{record.ctime,jdbcType=TIMESTAMP},
       mtime = #{record.mtime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.chainup.entity.Meeting" >
-    update meeting
+  <update id="updateByPrimaryKeySelective" parameterType="com.chainup.entity.User" >
+    update user
     <set >
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="userId != null" >
-        user_id = #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="roomId != null" >
-        room_id = #{roomId,jdbcType=INTEGER},
+      <if test="openId != null" >
+        open_id = #{openId,jdbcType=VARCHAR},
       </if>
       <if test="departmentId != null" >
         department_id = #{departmentId,jdbcType=INTEGER},
       </if>
-      <if test="beginTime != null" >
-        begin_time = #{beginTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="endTime != null" >
-        end_time = #{endTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=TINYINT},
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
       </if>
       <if test="ctime != null" >
         ctime = #{ctime,jdbcType=TIMESTAMP},
@@ -277,15 +219,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.chainup.entity.Meeting" >
-    update meeting
-    set name = #{name,jdbcType=VARCHAR},
-      user_id = #{userId,jdbcType=INTEGER},
-      room_id = #{roomId,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.chainup.entity.User" >
+    update user
+    set open_id = #{openId,jdbcType=VARCHAR},
       department_id = #{departmentId,jdbcType=INTEGER},
-      begin_time = #{beginTime,jdbcType=TIMESTAMP},
-      end_time = #{endTime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=TINYINT},
+      user_name = #{userName,jdbcType=VARCHAR},
       ctime = #{ctime,jdbcType=TIMESTAMP},
       mtime = #{mtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

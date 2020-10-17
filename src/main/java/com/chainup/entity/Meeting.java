@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
-* @author qinxuan
+* @author LiLi
 */
 public class Meeting implements Serializable {
     /**
@@ -13,9 +13,14 @@ public class Meeting implements Serializable {
     private Integer id;
 
     /**
-     * 会议名称
+     * 会议名称/主题
      */
     private String name;
+
+    /**
+     * 用户id
+     */
+    private Integer userId;
 
     /**
      * 会议室id
@@ -30,7 +35,7 @@ public class Meeting implements Serializable {
     /**
      * 会议开始时间
      */
-    private Date startTime;
+    private Date beginTime;
 
     /**
      * 会议结束时间
@@ -38,24 +43,19 @@ public class Meeting implements Serializable {
     private Date endTime;
 
     /**
+     * 0=未预定；1=进行中；2=已结束
+     */
+    private Byte status;
+
+    /**
      * 创建时间
      */
     private Date ctime;
 
     /**
-     * 更新时间
+     * 修改时间
      */
     private Date mtime;
-
-    /**
-     * 0=未开始；1=进行中；2=已结束
-     */
-    private Byte status;
-
-    /**
-     * 会议预定人的openid（同一个公众号/小程序下唯一）
-     */
-    private String userOpenid;
 
     private static final long serialVersionUID = 1L;
 
@@ -75,6 +75,14 @@ public class Meeting implements Serializable {
         this.name = name == null ? null : name.trim();
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     public Integer getRoomId() {
         return roomId;
     }
@@ -91,12 +99,12 @@ public class Meeting implements Serializable {
         this.departmentId = departmentId;
     }
 
-    public Date getStartTime() {
-        return startTime;
+    public Date getBeginTime() {
+        return beginTime;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setBeginTime(Date beginTime) {
+        this.beginTime = beginTime;
     }
 
     public Date getEndTime() {
@@ -105,6 +113,14 @@ public class Meeting implements Serializable {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public Byte getStatus() {
+        return status;
+    }
+
+    public void setStatus(Byte status) {
+        this.status = status;
     }
 
     public Date getCtime() {
@@ -121,22 +137,6 @@ public class Meeting implements Serializable {
 
     public void setMtime(Date mtime) {
         this.mtime = mtime;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
-    public String getUserOpenid() {
-        return userOpenid;
-    }
-
-    public void setUserOpenid(String userOpenid) {
-        this.userOpenid = userOpenid == null ? null : userOpenid.trim();
     }
 
     public static class Builder {
@@ -156,6 +156,11 @@ public class Meeting implements Serializable {
             return this;
         }
 
+        public Builder userId(Integer userId) {
+            obj.userId = userId;
+            return this;
+        }
+
         public Builder roomId(Integer roomId) {
             obj.roomId = roomId;
             return this;
@@ -166,13 +171,18 @@ public class Meeting implements Serializable {
             return this;
         }
 
-        public Builder startTime(Date startTime) {
-            obj.startTime = startTime;
+        public Builder beginTime(Date beginTime) {
+            obj.beginTime = beginTime;
             return this;
         }
 
         public Builder endTime(Date endTime) {
             obj.endTime = endTime;
+            return this;
+        }
+
+        public Builder status(Byte status) {
+            obj.status = status;
             return this;
         }
 
@@ -183,16 +193,6 @@ public class Meeting implements Serializable {
 
         public Builder mtime(Date mtime) {
             obj.mtime = mtime;
-            return this;
-        }
-
-        public Builder status(Byte status) {
-            obj.status = status;
-            return this;
-        }
-
-        public Builder userOpenid(String userOpenid) {
-            obj.userOpenid = userOpenid;
             return this;
         }
 

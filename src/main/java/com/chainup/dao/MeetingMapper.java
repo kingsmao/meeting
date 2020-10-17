@@ -1,14 +1,14 @@
 package com.chainup.dao;
 
-import java.util.List;
-
 import com.chainup.entity.Meeting;
 import com.chainup.entity.MeetingExample;
+import java.util.List;
+
 import com.chainup.service.SqlMapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
-* @author qinxuan
+* @author LiLi
 */
 public interface MeetingMapper extends SqlMapper {
     int countByExample(MeetingExample example);
@@ -20,6 +20,7 @@ public interface MeetingMapper extends SqlMapper {
     int insert(Meeting record);
 
     int insertSelective(Meeting record);
+
 
     List<Meeting> selectByExample(MeetingExample example);
 
