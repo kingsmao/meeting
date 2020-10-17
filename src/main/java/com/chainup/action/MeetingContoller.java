@@ -14,29 +14,32 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 public class MeetingContoller {
-
     /**
-     * 我的预定会议室
+     * 1.通过时间查找可用会议室
      *
      * @return
      */
-    @GetMapping("/myMeeting")
-    public String myMeeting() {
+    @GetMapping("/availableRoomByTime")
+    public String availableRoomByTime() {
         return null;
     }
 
+
     /**
-     * 会议室信息：展示给客户端，会议室名字，会议部门等信息
+     * 2.通过时间+room_id查找会议室及预定详情
      *
-     * @return
+     * @return 会议室详情 + 此会议室预定meeting记录
+     *         部门下拉列表
+     *         参数 时间+room_id传回去
      */
-    @GetMapping("/meetingInfo")
-    public String meetingInfo() {
+    @GetMapping("/meetingRoomInfoAdd")
+    public String meetingRoomInfoAdd() {
         return null;
     }
 
+
     /**
-     * 预定会议室
+     * 3.预定会议室
      *
      * @return
      */
@@ -45,34 +48,40 @@ public class MeetingContoller {
         return null;
     }
 
+
+
     /**
-     * 取消自己预定的会议室
+     * 4.我的预定会议室
+     * @param  open_id
+     *
+     * @return
+     */
+    @GetMapping("/myMeeting")
+    public String myMeeting(String open_id) {
+        return null;
+    }
+
+
+
+    /**
+     * 5.通过meeting_id查找会议室及预定详情
+     *
+     * @return 会议室详情 + 此会议室预定meeting记录
+     *         部门下拉列表
+     */
+    @GetMapping("/meetingInfoEdit")
+    public String meetingInfoEdit() {
+        return null;
+    }
+
+
+    /**
+     * 6.取消自己预定的会议室
      *
      * @return
      */
     @PostMapping("/cancelMeetingRoom")
     public String cancelMeetingRoom() {
-        return null;
-    }
-
-    /**
-     * 通过时间查找可用会议室
-     *
-     * @return
-     */
-    @GetMapping("/findAvailableMeetingRoomByTime")
-    public String availableMeetingRoom() {
-        return null;
-    }
-
-
-    /**
-     * 已经预定的所有会议室，大于当前时间
-     *
-     * @return
-     */
-    @GetMapping("/allReservedMeetingRoom")
-    public String allReservedMeetingRoom() {
         return null;
     }
 
