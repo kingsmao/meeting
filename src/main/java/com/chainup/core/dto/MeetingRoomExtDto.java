@@ -15,7 +15,6 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Data
 @ApiModel(description = "包含部门的会议室")
 public class MeetingRoomExtDto extends MeetingRoomDto {
