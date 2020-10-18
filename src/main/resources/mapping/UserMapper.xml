@@ -6,6 +6,7 @@
     <result column="open_id" property="openId" jdbcType="VARCHAR" />
     <result column="department_id" property="departmentId" jdbcType="INTEGER" />
     <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
     <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
     <result column="mtime" property="mtime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -68,7 +69,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, open_id, department_id, user_name, ctime, mtime
+    id, open_id, department_id, user_name, nick_name, ctime, mtime
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.chainup.entity.UserExample" >
     select
@@ -105,11 +106,11 @@
   </delete>
   <insert id="insert" parameterType="com.chainup.entity.User" >
     insert into user (id, open_id, department_id, 
-      user_name, ctime, mtime
-      )
+      user_name, nick_name, ctime, 
+      mtime)
     values (#{id,jdbcType=INTEGER}, #{openId,jdbcType=VARCHAR}, #{departmentId,jdbcType=INTEGER}, 
-      #{userName,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP}, #{mtime,jdbcType=TIMESTAMP}
-      )
+      #{userName,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP}, 
+      #{mtime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.chainup.entity.User" >
     insert into user
@@ -125,6 +126,9 @@
       </if>
       <if test="userName != null" >
         user_name,
+      </if>
+      <if test="nickName != null" >
+        nick_name,
       </if>
       <if test="ctime != null" >
         ctime,
@@ -145,6 +149,9 @@
       </if>
       <if test="userName != null" >
         #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
       </if>
       <if test="ctime != null" >
         #{ctime,jdbcType=TIMESTAMP},
@@ -175,6 +182,9 @@
       <if test="record.userName != null" >
         user_name = #{record.userName,jdbcType=VARCHAR},
       </if>
+      <if test="record.nickName != null" >
+        nick_name = #{record.nickName,jdbcType=VARCHAR},
+      </if>
       <if test="record.ctime != null" >
         ctime = #{record.ctime,jdbcType=TIMESTAMP},
       </if>
@@ -192,6 +202,7 @@
       open_id = #{record.openId,jdbcType=VARCHAR},
       department_id = #{record.departmentId,jdbcType=INTEGER},
       user_name = #{record.userName,jdbcType=VARCHAR},
+      nick_name = #{record.nickName,jdbcType=VARCHAR},
       ctime = #{record.ctime,jdbcType=TIMESTAMP},
       mtime = #{record.mtime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
@@ -210,6 +221,9 @@
       <if test="userName != null" >
         user_name = #{userName,jdbcType=VARCHAR},
       </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>
       <if test="ctime != null" >
         ctime = #{ctime,jdbcType=TIMESTAMP},
       </if>
@@ -224,8 +238,15 @@
     set open_id = #{openId,jdbcType=VARCHAR},
       department_id = #{departmentId,jdbcType=INTEGER},
       user_name = #{userName,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
       ctime = #{ctime,jdbcType=TIMESTAMP},
       mtime = #{mtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findUserByOpenId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where open_id = #{openId,jdbcType=VARCHAR}
+  </select>
 </mapper>

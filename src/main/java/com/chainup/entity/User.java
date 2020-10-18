@@ -28,6 +28,11 @@ public class User implements Serializable {
     private String userName;
 
     /**
+     * 用户昵称名字
+     */
+    private String nickName;
+
+    /**
      * 创建时间
      */
     private Date ctime;
@@ -71,6 +76,14 @@ public class User implements Serializable {
         this.userName = userName == null ? null : userName.trim();
     }
 
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName == null ? null : nickName.trim();
+    }
+
     public Date getCtime() {
         return ctime;
     }
@@ -111,6 +124,11 @@ public class User implements Serializable {
 
         public Builder userName(String userName) {
             obj.userName = userName;
+            return this;
+        }
+
+        public Builder nickName(String nickName) {
+            obj.nickName = nickName;
             return this;
         }
 

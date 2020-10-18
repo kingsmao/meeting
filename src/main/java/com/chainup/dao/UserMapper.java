@@ -1,15 +1,16 @@
 package com.chainup.dao;
 
+
+import java.util.List;
+
 import com.chainup.entity.User;
 import com.chainup.entity.UserExample;
 import com.chainup.service.SqlMapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
-
 /**
- * @author LiLi
- */
+* @author LiLi
+*/
 public interface UserMapper extends SqlMapper {
     int countByExample(UserExample example);
 
@@ -33,4 +34,6 @@ public interface UserMapper extends SqlMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    User findUserByOpenId(@Param("openId") String openId);
 }

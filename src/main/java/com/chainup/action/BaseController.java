@@ -17,8 +17,10 @@ public abstract class BaseController {
 
     protected static final String APPLICATION_JSON = "application/json; charset=utf-8";
 
-    <T> RequestResult<T> success(T t) {
+    public final <T> RequestResult<T> success(T t) {
         RequestResult<T> rr = new RequestResult<>();
+        rr.setCode(ExceptionCode.SUCCESS.getCode());
+        rr.setMessage(ExceptionCode.SUCCESS.getMessage());
         rr.setData(t);
         String json = JSON.toJSONString(rr);
         String requestURI = request.getRequestURI();
@@ -32,7 +34,7 @@ public abstract class BaseController {
      * @param msg 失败原因
      * @return
      */
-    <T> RequestResult<T> error(String msg) {
+    public final <T> RequestResult<T> error(String msg) {
         RequestResult<T> rr = new RequestResult<>(ExceptionCode.INTERNAL_ERROR.getCode(), msg);
         String requestURI = request.getRequestURI();
         log.error("requestURI:{}, result json: {}", requestURI, JSON.toJSONString(rr));
@@ -44,7 +46,7 @@ public abstract class BaseController {
      * @param <T>
      * @return
      */
-    public <T> RequestResult<T> error(ExceptionCode e) {
+    public final <T> RequestResult<T> error(ExceptionCode e) {
         String requestURI = request.getRequestURI();
         log.error("requestURI:{}, result json: {}", requestURI, e.getMessage());
         return new RequestResult<>(e.getCode(), e.getMessage());
@@ -55,8 +57,10 @@ public abstract class BaseController {
      *
      * @return
      */
-    <T> RequestResult<T> success() {
+    public final <T> RequestResult<T> success() {
         RequestResult<T> rr = new RequestResult<>();
+        rr.setCode(ExceptionCode.SUCCESS.getCode());
+        rr.setMessage(ExceptionCode.SUCCESS.getMessage());
         String requestURI = request.getRequestURI();
         log.info("requestURI:{}, result json: {}", requestURI, JSON.toJSONString(rr));
         return rr;

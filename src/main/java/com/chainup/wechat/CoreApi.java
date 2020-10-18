@@ -1,47 +1,59 @@
 package com.chainup.wechat;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.chainup.action.BaseController;
 import com.chainup.cacha.SysCacha;
+import com.chainup.core.config.RequestResult;
+import com.chainup.service.UserService;
 import com.chainup.utils.CoreUrl;
 import com.chainup.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/core")
-public class CoreApi {
+public class CoreApi extends BaseController {
 
     @Value("${mini.appid}")
     private String appid;
     @Value("${mini.secret}")
     private String secret;
 
-//    @Autowired
-//    private CustomerService customerService;
+    @Autowired
+    private UserService userService;
 
 
     @GetMapping("/saveClientInfo.do")
-    public String code2Session(@RequestParam(required = false) String openid,
-                               @RequestParam(required = false) String nickName,
-                               @RequestParam(required = false) String wxImg) {
+    public RequestResult<String> code2Session(@RequestParam(required = false) String openid,
+                                              @RequestParam(required = false) String nickName,
+                                              @RequestParam(required = false) String wxImg) {
         log.info("openId:{},nickName:{},wxImg:{}", openid, nickName, wxImg);
-        return "ok";
+        if (!userService.isUserExist(openid)) {
+            userService.createUser(nickName, openid, wxImg);
+        } else {
+            log.warn("用户已存在，openId:{}", openid);
+        }
+        return success();
     }
 
 
-    @ResponseBody
-    @RequestMapping("/code2Session.do")
-    public String code2Session(@RequestParam(name = "code") String code) {
+    /**
+     * 根据小程序wx.login的code获取openid
+     *
+     * @param code 临时登录凭证 code
+     * @return
+     */
+    @GetMapping("/code2Session.do")
+    public RequestResult<Map<String, Object>> code2Session(@RequestParam(name = "code") String code) {
         log.info("/code2Session.do 获取code：" + code);
         String result = null;
         String openid = null;
@@ -49,7 +61,7 @@ public class CoreApi {
         Map<String, Object> map = new HashMap<String, Object>();
         try {
             result = HttpUtil.doHttpsGetJson(CoreUrl.getCode2SessionURL(appid, secret, code));
-            log.info("请求API返回结果：" + result);
+            log.info("code2Session result：" + result);
             JSONObject jsonStr = JSONObject.parseObject(result);
             if (jsonStr.containsKey("openid")) {
                 openid = jsonStr.getString("openid");
@@ -61,7 +73,7 @@ public class CoreApi {
         } catch (Exception e) {
             log.error("请求小程序API发生错误", e);
         }
-        return JSON.toJSONString(map);
+        return success(map);
     }
 
     /**
@@ -83,33 +95,8 @@ public class CoreApi {
                 return "success";
             }
         } catch (Exception e) {
-
             log.info("调取微信接口向用户发送模板消息出错：" + jsonStr);
         }
         return "fail";
     }
-
-    /**
-     * 保存用户信息
-     * @param request
-     * @return
-     */
-    // todo 用户进入小程序时记录openid
-   /* @ResponseBody
-    @RequestMapping(value = "/core/saveClientInfo.do")
-    public String dealuserInfo(HttpServletRequest request) {
-        log.info("接收到参数：" + request.getParameter("nickName"));
-        String openid = request.getParameter("openid");
-        String nickName = request.getParameter("nickName");
-        String wxImg = request.getParameter("wxImg");
-        Client client = new Client();
-        client.setOpenid(openid);
-        client.setNickName(nickName);
-        client.setWxImg(wxImg);
-        if (customerService.insertClient(client)) {
-            return "0ok0";
-        } else {
-            return "falisesesssss";
-        }
-    }*/
 }

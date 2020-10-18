@@ -17,10 +17,13 @@ CREATE TABLE `user` (
   `id` int  NOT NULL AUTO_INCREMENT,
   `open_id` varchar(255) NOT NULL COMMENT '小程序用户唯一标识',
   `department_id` int NOT NULL COMMENT '用户所属部门，暂时没用',
-  `user_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '用户名字',
+  `user_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '用户真实名字',
+  `nick_name` varchar(255) NOT NULL DEFAULT '0' COMMENT '用户昵称名字',
   `ctime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `mtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `open_id_UNIQUE` (`open_id`)
+
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 
