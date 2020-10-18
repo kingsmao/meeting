@@ -30,10 +30,10 @@ public class Swagger3Config {
         log.info("buildDocket ...");
 
         //request header 参数
-        List<RequestParameter> parameters = new ArrayList<>();
-        RequestParameterBuilder builder = new RequestParameterBuilder();
-        RequestParameter requestParameter = builder.required(false).in(ParameterType.HEADER).name("login-token").description("登录token").build();
-        parameters.add(requestParameter);
+//        List<RequestParameter> parameters = new ArrayList<>();
+//        RequestParameterBuilder builder = new RequestParameterBuilder();
+//        RequestParameter requestParameter = builder.required(false).in(ParameterType.HEADER).name("login-token").description("登录token").build();
+//        parameters.add(requestParameter);
 
         return new Docket(DocumentationType.OAS_30)
                 .pathMapping("/")
@@ -44,8 +44,8 @@ public class Swagger3Config {
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
-                .build()
-                .globalRequestParameters(parameters);
+                .build();
+                //.globalRequestParameters(parameters);
     }
 
     private ApiInfo buildApiInfo() {

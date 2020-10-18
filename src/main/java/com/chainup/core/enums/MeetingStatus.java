@@ -22,6 +22,15 @@ public enum MeetingStatus {
         this.description = description;
     }
 
+    public static String descriptionByStatus(int status) {
+        for (MeetingStatus value : values()) {
+            if (value.status == status) {
+                return value.description;
+            }
+        }
+        return "";
+    }
+
 
     MeetingStatus(int status) {
         this.status = status;

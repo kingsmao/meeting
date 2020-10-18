@@ -2,6 +2,7 @@ package com.chainup.service.impl;
 
 import com.chainup.core.dto.MeetingDto;
 import com.chainup.core.dto.MeetingRoomDto;
+import com.chainup.core.enums.MeetingStatus;
 import com.chainup.dao.DepartmentMapper;
 import com.chainup.dao.MeetingMapper;
 import com.chainup.dao.RoomMapper;
@@ -54,11 +55,13 @@ public class MeetingServiceImpl implements MeetingService {
                 Integer departmentId = meeting.getDepartmentId();
                 Department department = departmentMapper.selectByPrimaryKey(departmentId);
                 meetingDtos.add(MeetingDto.builder()
+                        .meetingId(meeting.getId().toString())
                         .beginTime(meeting.getBeginTime().toString())
                         .endTime(meeting.getEndTime().toString())
                         .meetingName(meeting.getName())
                         .departmentName(department.getName())
                         .status(meeting.getStatus().toString())
+                        .statusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()))
                         .meetingName(meeting.getName())
                         .userName(meeting.getName()).build());
             }
