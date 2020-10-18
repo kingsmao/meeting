@@ -8,18 +8,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @Controller
+@RequestMapping("/core")
 public class CoreApi {
 
     @Value("${mini.appid}")
@@ -30,8 +31,18 @@ public class CoreApi {
    /* @Autowired
     private CustomerService customerService;*/
 
+
+    @GetMapping("/saveClientInfo.do")
+    public String code2Session(@RequestParam(required = false) String openid,
+                               @RequestParam(required = false) String nickName,
+                               @RequestParam(required = false) String wxImg) {
+        log.info("openId:{},nickName:{},wxImg:{}",openid,nickName,wxImg);
+        return "hello";
+    }
+
+
     @ResponseBody
-    @RequestMapping("/core/code2Session.do")
+    @RequestMapping("/code2Session.do")
     public String code2Session(String code) {
         log.info("进入到core方法，获取code：" + code);
         String result = null;
@@ -41,7 +52,7 @@ public class CoreApi {
         Map<String, Object> map = new HashMap<String, Object>();
 
         try {
-            result = HttpUtil.doHttpsGetJson(CoreUrl.getCode2SessionURL(appid,secret,code));
+            result = HttpUtil.doHttpsGetJson(CoreUrl.getCode2SessionURL(appid, secret, code));
             log.info("请求API返回结果：" + result);
             JSONObject jsonStr = JSONObject.fromObject(result);
             if (jsonStr.has("openid")) {
@@ -59,10 +70,11 @@ public class CoreApi {
 
     /**
      * 向客户发送模板消息
+     *
      * @param textMsg
      * @return
      */
-    public static String sendTemplateMessage(String textMsg){
+    public static String sendTemplateMessage(String textMsg) {
         log.info("进入到发送模板消息方法");
         String jsonStr = "";
         try {
