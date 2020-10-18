@@ -1,13 +1,11 @@
 package com.chainup.wechat;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.chainup.cacha.SysCacha;
 import com.chainup.utils.CoreUrl;
 import com.chainup.utils.HttpUtil;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,16 +26,16 @@ public class CoreApi {
     @Value("${mini.secret}")
     private String secret;
 
-   /* @Autowired
-    private CustomerService customerService;*/
+//    @Autowired
+//    private CustomerService customerService;
 
 
     @GetMapping("/saveClientInfo.do")
     public String code2Session(@RequestParam(required = false) String openid,
                                @RequestParam(required = false) String nickName,
                                @RequestParam(required = false) String wxImg) {
-        log.info("openId:{},nickName:{},wxImg:{}",openid,nickName,wxImg);
-        return "hello";
+        log.info("openId:{},nickName:{},wxImg:{}", openid, nickName, wxImg);
+        return "ok";
     }
 
 
@@ -47,25 +45,23 @@ public class CoreApi {
         log.info("进入到core方法，获取code：" + code);
         String result = null;
         String openid = null;
-        String session_key = null;
-        Gson gson = new Gson();
+        String sessionKey = null;
         Map<String, Object> map = new HashMap<String, Object>();
-
         try {
             result = HttpUtil.doHttpsGetJson(CoreUrl.getCode2SessionURL(appid, secret, code));
             log.info("请求API返回结果：" + result);
-            JSONObject jsonStr = JSONObject.fromObject(result);
-            if (jsonStr.has("openid")) {
+            JSONObject jsonStr = JSONObject.parseObject(result);
+            if (jsonStr.containsKey("openid")) {
                 openid = jsonStr.getString("openid");
-                session_key = jsonStr.getString("session_key");
+                sessionKey = jsonStr.getString("session_key");
                 map.put("openid", openid);
-                map.put("session_key", session_key);
-                log.info("openid:：" + openid + "session_key: " + session_key);
+                map.put("session_key", sessionKey);
+                log.info("openid:：" + openid + "session_key: " + sessionKey);
             }
         } catch (Exception e) {
             log.error("请求小程序API发生错误", e);
         }
-        return gson.toJson(map);
+        return JSON.toJSONString(map);
     }
 
     /**
@@ -79,11 +75,10 @@ public class CoreApi {
         String jsonStr = "";
         try {
             jsonStr = HttpUtil.executeJsonParamHttpPost(CoreUrl.sendTemplateMessageURL() + SysCacha.getAccessToken(), textMsg);
-            JsonParser jsonParser = new JsonParser();
-            JsonObject jsonObject = jsonParser.parse(jsonStr).getAsJsonObject();
+            JSONObject jsonObject = JSONObject.parseObject(jsonStr);
             //System.out.println(new GsonBuilder().serializeNulls().setPrettyPrinting().create().toJson(jsonObject));
             log.info("返回消息:" + jsonStr);
-            if (jsonObject.get("errcode").getAsString().equals("0")) {
+            if (jsonObject.getString("errcode").equals("0")) {
                 log.info("发送模板消息成功！：");
                 return "success";
             }

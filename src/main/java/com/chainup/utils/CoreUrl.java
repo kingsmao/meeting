@@ -8,15 +8,23 @@ package com.chainup.utils;
  **/
 public class CoreUrl {
 
+    /**
+     * 获取用户open_id
+     *
+     * @param appid
+     * @param secret
+     * @param code
+     * @return
+     */
     public static String getCode2SessionURL(String appid, String secret, String code) {
-        return "https://api.weixin.qq.com/sns/jscode2session?appid="+appid+"&secret="+secret+"&js_code="+code+"&grant_type=authorization_code";
+        return "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + code + "&grant_type=authorization_code";
     }
 
-    public static String sendTemplateMessageURL(){
+    public static String sendTemplateMessageURL() {
         return "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=";
     }
 
-    public static String getAccessTokenURL(String appid,String secret){
-        return "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid="+appid+"&secret="+ secret;
+    public static String getAccessTokenURL(String appid, String secret) {
+        return "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
     }
 }
