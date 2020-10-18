@@ -1,18 +1,19 @@
 package com.chainup.action;
 
+import com.chainup.core.config.ExceptionCode;
 import com.chainup.core.config.RequestResult;
 import com.chainup.core.dto.MeetingRoomDto;
-import com.chainup.core.dto.MeetingRoomExtDto;
+import com.chainup.core.dto.MyMeetingRoomDto;
 import com.chainup.core.params.ReserveMeetingParams;
 import com.chainup.service.MeetingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.chainup.core.config.WebConstants.API_STATUS_DEVELOPING;
@@ -30,6 +31,7 @@ public class MeetingContoller extends BaseController {
 
     @Autowired
     private MeetingService meetingService;
+
     /**
      * 1.通过时间查找可用会议室
      *
@@ -56,13 +58,13 @@ public class MeetingContoller extends BaseController {
      */
     @ApiOperation(value = "某个会议室预定前的详情" + API_STATUS_DEVELOPING, httpMethod = "GET")
     @GetMapping("/meetingRoomInfo")
-    public RequestResult<MeetingRoomExtDto> meetingRoomInfo(@ApiParam(name = "beginTime", value = "开始时间")
+    public RequestResult<MyMeetingRoomDto> meetingRoomInfo(@ApiParam(name = "beginTime", value = "开始时间")
                                                             @RequestParam(name = "beginTime") String beginTime,
                                                             @ApiParam(name = "endTime", value = "结束时间")
                                                             @RequestParam(name = "endTime") String endTime,
                                                             @ApiParam(name = "roomId", value = "房间id")
                                                             @RequestParam(name = "roomId") int roomId) {
-        return success(new MeetingRoomExtDto());
+        return success(new MyMeetingRoomDto());
     }
 
 
@@ -85,9 +87,13 @@ public class MeetingContoller extends BaseController {
      */
     @GetMapping("/myMeetingList")
     @ApiOperation(value = "我预定的会议室列表" + API_STATUS_DEVELOPING, httpMethod = "GET")
-    public RequestResult<List<MeetingRoomExtDto>> myMeetingList(@ApiParam(name = "openId", value = "用户Id")
+    public RequestResult<List<MyMeetingRoomDto>> myMeetingList(@ApiParam(name = "openId", value = "用户Id")
                                                                 @RequestParam(name = "openId") String openId) {
-        List<MeetingRoomExtDto> data = new ArrayList<>();
+
+        if (StringUtils.isBlank(openId)) {
+            return error(ExceptionCode.PARAM_ERROR);
+        }
+        List<MyMeetingRoomDto> data = meetingService.getMyMeetingList(openId);
         return success(data);
     }
 
@@ -100,11 +106,11 @@ public class MeetingContoller extends BaseController {
      */
     @GetMapping("/myMeetingDetail")
     @ApiOperation(value = "我预定的会议室详情" + API_STATUS_DEVELOPING, httpMethod = "GET")
-    public RequestResult<MeetingRoomExtDto> myMeetingDetail(@ApiParam(name = "openId", value = "用户Id")
+    public RequestResult<MyMeetingRoomDto> myMeetingDetail(@ApiParam(name = "openId", value = "用户Id")
                                                             @RequestParam(name = "openId") String openId,
                                                             @ApiParam(name = "meetingId", value = "会议Id")
                                                             @RequestParam(name = "meetingId") int meetingId) {
-        return success(new MeetingRoomExtDto());
+        return success(new MyMeetingRoomDto());
     }
 
 

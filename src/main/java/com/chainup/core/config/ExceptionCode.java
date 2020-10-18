@@ -7,6 +7,7 @@ public enum ExceptionCode {
      */
     SUCCESS(0, "OK"),
 
+    PARAM_ERROR(1, "参数错误"),
 
     /**
      * 内部错误

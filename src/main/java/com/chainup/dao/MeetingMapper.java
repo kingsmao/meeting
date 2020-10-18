@@ -33,4 +33,6 @@ public interface MeetingMapper extends SqlMapper {
     int updateByPrimaryKeySelective(Meeting record);
 
     int updateByPrimaryKey(Meeting record);
+
+    List<Meeting> findByUserId(@Param("userId") Integer userId);
 }
