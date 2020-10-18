@@ -41,8 +41,8 @@ public class CoreApi {
 
     @ResponseBody
     @RequestMapping("/code2Session.do")
-    public String code2Session(String code) {
-        log.info("进入到core方法，获取code：" + code);
+    public String code2Session(@RequestParam(name = "code") String code) {
+        log.info("/code2Session.do 获取code：" + code);
         String result = null;
         String openid = null;
         String sessionKey = null;
