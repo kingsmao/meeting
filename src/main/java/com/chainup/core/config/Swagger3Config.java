@@ -36,6 +36,7 @@ public class Swagger3Config {
 //        parameters.add(requestParameter);
 
         return new Docket(DocumentationType.OAS_30)
+                .host("http://localhost:8080")
                 .pathMapping("/")
                 .apiInfo(buildApiInfo())
                 .select()
