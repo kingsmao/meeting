@@ -4,10 +4,12 @@ import com.chainup.core.config.RequestResult;
 import com.chainup.core.dto.MeetingRoomDto;
 import com.chainup.core.dto.MeetingRoomExtDto;
 import com.chainup.core.params.ReserveMeetingParams;
+import com.chainup.service.MeetingService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,6 +27,9 @@ import static com.chainup.core.config.WebConstants.API_STATUS_DEVELOPING;
 @RestController
 @Api(value = "MeetingContoller", description = "会议室API 0/6")
 public class MeetingContoller extends BaseController {
+
+    @Autowired
+    private MeetingService meetingService;
     /**
      * 1.通过时间查找可用会议室
      *
@@ -37,7 +42,7 @@ public class MeetingContoller extends BaseController {
                                                                    @ApiParam(name = "endTime", value = "结束时间")
                                                                    @RequestParam(name = "endTime") String endTime) {
 
-        List<MeetingRoomDto> data = new ArrayList<>();
+        List<MeetingRoomDto> data = meetingService.availableRoomByTime(beginTime, endTime);
         return success(data);
     }
 

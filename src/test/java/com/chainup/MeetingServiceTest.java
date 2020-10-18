@@ -1,5 +1,6 @@
 package com.chainup;
 
+import com.chainup.core.dto.MeetingRoomDto;
 import com.chainup.entity.Meeting;
 import com.chainup.entity.MeetingExample;
 import com.chainup.service.MeetingService;
@@ -25,5 +26,15 @@ public class MeetingServiceTest {
     public void t1() {
         List<Meeting> all = meetingService.findAll(new MeetingExample());
         System.out.println(all);
+    }
+
+    @Test
+    public void findAll() {
+    }
+
+    @Test
+    public void availableRoomByTime() {
+        List<MeetingRoomDto> meetingRoomDtos = meetingService.availableRoomByTime("", "");
+        System.out.println(meetingRoomDtos);
     }
 }
