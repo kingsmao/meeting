@@ -1,4 +1,4 @@
-package com.chainup.timer;
+package com.chainup.task;
 
 import com.chainup.wechat.AccessTokenApi;
 import org.springframework.beans.factory.annotation.Autowired;
