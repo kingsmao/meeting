@@ -168,10 +168,7 @@ public class DateUtil {
             }
         }
     }
-/*
-    public static void main(String[] args) {
-        System.out.println(countRat(test1(),test2(),300,183,"am"));
-    }*/
+
 
     public static Date test1(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

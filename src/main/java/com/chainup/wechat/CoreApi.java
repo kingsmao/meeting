@@ -2,7 +2,7 @@ package com.chainup.wechat;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chainup.action.BaseController;
-import com.chainup.cacha.SysCacha;
+import com.chainup.core.domain.AccessToken;
 import com.chainup.core.config.RequestResult;
 import com.chainup.service.UserService;
 import com.chainup.utils.CoreUrl;
@@ -90,7 +90,7 @@ public class CoreApi extends BaseController {
         log.info("进入到发送模板消息方法");
         String jsonStr = "";
         try {
-            jsonStr = HttpUtil.executeJsonParamHttpPost(CoreUrl.sendTemplateMessageURL() + SysCacha.getAccessToken(), textMsg);
+            jsonStr = HttpUtil.executeJsonParamHttpPost(CoreUrl.sendTemplateMessageURL() + AccessToken.getAccessToken(), textMsg);
             JSONObject jsonObject = JSONObject.parseObject(jsonStr);
             //System.out.println(new GsonBuilder().serializeNulls().setPrettyPrinting().create().toJson(jsonObject));
             log.info("返回消息:" + jsonStr);

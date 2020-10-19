@@ -1,10 +1,11 @@
 package com.chainup.wechat;
 
-import com.chainup.cacha.SysCacha;
+import com.chainup.core.domain.AccessToken;
 import com.chainup.utils.CoreUrl;
 import com.chainup.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,19 +21,17 @@ public class AccessTokenApi {
     @Value("${mini.secret}")
     private String secret;
 
-    public void getToken(){
-        String result = null;
-        String accessToken = "";
-        result = HttpUtil.doHttpsGetJson(CoreUrl.getAccessTokenURL(appid,secret));
+    public void getToken() {
 
-        if (null != result && !"".equals(result)) {
-            JSONObject jsonObject = JSONObject.fromObject(result);
-            accessToken = jsonObject.getString("access_token");
-        }
+        String tokenResponse = HttpUtil.doHttpsGetJson(CoreUrl.getAccessTokenURL(appid, secret));
 
-        if (null != accessToken && !"".equals(accessToken)) {
-            SysCacha.refreshToken(accessToken);
-            log.info("获取accesstoken成功！---------" + accessToken);
+        if (StringUtils.isNotBlank(tokenResponse)) {
+            JSONObject jsonObject = JSONObject.fromObject(tokenResponse);
+            String accessToken = jsonObject.getString("access_token");
+            if (StringUtils.isNotBlank(accessToken)) {
+                AccessToken.refresh(accessToken);
+                log.info("获取accesstoken成功！---------" + accessToken);
+            }
         }
     }
 }
