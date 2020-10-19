@@ -8,6 +8,7 @@ import com.chainup.service.UserService;
 import com.chainup.utils.CoreUrl;
 import com.chainup.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,10 +34,13 @@ public class CoreApi extends BaseController {
 
 
     @GetMapping("/saveClientInfo.do")
-    public RequestResult<String> code2Session(@RequestParam(required = false) String openid,
-                                              @RequestParam(required = false) String nickName,
-                                              @RequestParam(required = false) String wxImg) {
-        log.info("openId:{},nickName:{},wxImg:{}", openid, nickName, wxImg);
+    public RequestResult<String> saveClientInfo(@RequestParam(required = false) String openid,
+                                                @RequestParam(required = false) String nickName,
+                                                @RequestParam(required = false) String wxImg) {
+        log.info("saveClientInfo openId:{},nickName:{},wxImg:{}", openid, nickName, wxImg);
+        if (StringUtils.isBlank(openid)) {
+            return error("openId不能为空");
+        }
         if (!userService.isUserExist(openid)) {
             userService.createUser(nickName, openid, wxImg);
         } else {
