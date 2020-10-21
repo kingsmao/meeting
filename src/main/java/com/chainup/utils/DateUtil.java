@@ -170,6 +170,23 @@ public class DateUtil {
     }
 
 
+    /**
+     *
+     * @param dateString 2019-02-26 09:30
+     * @return
+     */
+    public static Date parse(String dateString) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = new Date();
+        try {
+            date = sdf.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+
     public static Date test1(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String a = "2019-02-26 09:30:00";
@@ -234,10 +251,6 @@ public class DateUtil {
         }
     }
 
-    public static void main(String[] args) {
-        String accTime = DateUtil.date2Str(DateUtil.getYMD(new Date()));
-        System.out.println(accTime);
-    }
 
     /**
      * 输入分子分母，得出比例

@@ -2,8 +2,8 @@ package com.chainup.wechat;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chainup.action.BaseController;
-import com.chainup.core.domain.AccessToken;
 import com.chainup.core.config.RequestResult;
+import com.chainup.core.domain.AccessToken;
 import com.chainup.service.UserService;
 import com.chainup.utils.CoreUrl;
 import com.chainup.utils.HttpUtil;
@@ -72,7 +72,7 @@ public class CoreApi extends BaseController {
                 sessionKey = jsonStr.getString("session_key");
                 map.put("openid", openid);
                 map.put("session_key", sessionKey);
-                log.info("openid:：" + openid + "session_key: " + sessionKey);
+                log.info("openid:{},session_key:{}", openid, sessionKey);
             }
         } catch (Exception e) {
             log.error("请求小程序API发生错误", e);

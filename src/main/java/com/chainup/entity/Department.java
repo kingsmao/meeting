@@ -1,11 +1,14 @@
 package com.chainup.entity;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
 * @author LiLi
 */
+@Data
 public class Department implements Serializable {
     /**
      * 

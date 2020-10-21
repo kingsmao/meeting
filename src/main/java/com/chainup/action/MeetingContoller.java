@@ -59,12 +59,16 @@ public class MeetingContoller extends BaseController {
     @ApiOperation(value = "某个会议室预定前的详情" + API_STATUS_DEVELOPING, httpMethod = "GET")
     @GetMapping("/meetingRoomInfo")
     public RequestResult<MyMeetingRoomDto> meetingRoomInfo(@ApiParam(name = "beginTime", value = "开始时间")
-                                                            @RequestParam(name = "beginTime") String beginTime,
-                                                            @ApiParam(name = "endTime", value = "结束时间")
-                                                            @RequestParam(name = "endTime") String endTime,
-                                                            @ApiParam(name = "roomId", value = "房间id")
-                                                            @RequestParam(name = "roomId") int roomId) {
-        return success(new MyMeetingRoomDto());
+                                                           @RequestParam(name = "beginTime") String beginTime,
+                                                           @ApiParam(name = "endTime", value = "结束时间")
+                                                           @RequestParam(name = "endTime") String endTime,
+                                                           @ApiParam(name = "roomId", value = "房间id")
+                                                           @RequestParam(name = "roomId") int roomId,
+                                                           @ApiParam(name = "openId", value = "用户Id")
+                                                           @RequestParam(name = "openId") String openId) {
+
+        MyMeetingRoomDto myMeetingRoomDto = meetingService.getMeetingRoomInfo(beginTime, endTime, roomId, openId);
+        return success(myMeetingRoomDto);
     }
 
 
@@ -76,6 +80,7 @@ public class MeetingContoller extends BaseController {
     @PostMapping("/reserveMeetingRoom")
     @ApiOperation(value = "预定会议室" + API_STATUS_DEVELOPING, httpMethod = "POST")
     public RequestResult<Void> reserveMeetingRoom(@RequestBody ReserveMeetingParams reserveMeetingParams) {
+        meetingService.reserveMeetingRoom(reserveMeetingParams);
         return success();
     }
 
@@ -88,7 +93,7 @@ public class MeetingContoller extends BaseController {
     @GetMapping("/myMeetingList")
     @ApiOperation(value = "我预定的会议室列表" + API_STATUS_DEVELOPING, httpMethod = "GET")
     public RequestResult<List<MyMeetingRoomDto>> myMeetingList(@ApiParam(name = "openId", value = "用户Id")
-                                                                @RequestParam(name = "openId") String openId) {
+                                                               @RequestParam(name = "openId") String openId) {
 
         if (StringUtils.isBlank(openId)) {
             return error(ExceptionCode.PARAM_ERROR);
@@ -106,11 +111,10 @@ public class MeetingContoller extends BaseController {
      */
     @GetMapping("/myMeetingDetail")
     @ApiOperation(value = "我预定的会议室详情" + API_STATUS_DEVELOPING, httpMethod = "GET")
-    public RequestResult<MyMeetingRoomDto> myMeetingDetail(@ApiParam(name = "openId", value = "用户Id")
-                                                            @RequestParam(name = "openId") String openId,
-                                                            @ApiParam(name = "meetingId", value = "会议Id")
-                                                            @RequestParam(name = "meetingId") int meetingId) {
-        return success(new MyMeetingRoomDto());
+    public RequestResult<MyMeetingRoomDto> myMeetingDetail(@ApiParam(name = "meetingId", value = "会议Id")
+                                                           @RequestParam(name = "meetingId") int meetingId) {
+        MyMeetingRoomDto myMeetingRoomDto = meetingService.myMeetingDetail(meetingId);
+        return success(myMeetingRoomDto);
     }
 
 
@@ -125,7 +129,7 @@ public class MeetingContoller extends BaseController {
                                                  @RequestParam(name = "openId") String openId,
                                                  @ApiParam(name = "meetingId", value = "会议Id")
                                                  @RequestParam(name = "meetingId") int meetingId) {
-
+        meetingService.cancelMeetingRoom(meetingId);
         return success();
     }
 

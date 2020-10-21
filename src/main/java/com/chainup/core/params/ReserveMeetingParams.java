@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 public class ReserveMeetingParams {
 
     @ApiModelProperty(value = "roomId")
-    private String roomId;
+    private int roomId;
     @ApiModelProperty(value = "房间名字")
     private String roomName;
     @ApiModelProperty(value = "会议开始时间")

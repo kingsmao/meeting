@@ -1,10 +1,13 @@
 package com.chainup.core.dto;
 
+import com.chainup.entity.Department;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * 包含了会议部门选项的会议室
@@ -20,14 +23,14 @@ import lombok.NoArgsConstructor;
 @ApiModel(description = "我的会议室")
 public class MyMeetingRoomDto {
     @ApiModelProperty(value = "roomId")
-    private String roomId;
+    private int roomId;
     @ApiModelProperty(value = "房间名字")
     private String roomName;
     @ApiModelProperty(value = "房间描述")
     private String description;
 
     @ApiModelProperty(value = "meetingId")
-    private String meetingId;
+    private int meetingId;
 
     @ApiModelProperty(value = "会议名字/会议内容")
     private String meetingName;
@@ -49,6 +52,16 @@ public class MyMeetingRoomDto {
 
     @ApiModelProperty(value = "会议室状态描述")
     private String statusMsg;
+
+    /**
+     * 部门列表
+     */
+    @ApiModelProperty(value = "部门列表")
+    private List<Department> departmentList;
+
+
+    @ApiModelProperty(value = "房间已经有的会议")
+    private List<MeetingDto> meetingList;
 
 
 }
