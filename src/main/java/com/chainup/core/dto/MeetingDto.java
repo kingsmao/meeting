@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * 搜索页面的数据结构
+ *
  * @author lili
  * @date 2020/10/17 16:58
  * @see
@@ -26,11 +28,17 @@ public class MeetingDto {
     @ApiModelProperty(value = "会议名字/会议内容")
     private String meetingName;
 
+    @ApiModelProperty(value = "会议名字/会议内容")
+    private String meetingSubject;
+
     @ApiModelProperty(value = "会议开始时间")
-    private String beginTime;
+    private long beginTime;
 
     @ApiModelProperty(value = "会议结束时间时间")
-    private String endTime;
+    private long endTime;
+
+    @ApiModelProperty(value = "会议室时间区间")
+    private String timeRange;
 
     @ApiModelProperty(value = "部门名字")
     private String departmentName;

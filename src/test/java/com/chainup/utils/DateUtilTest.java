@@ -30,4 +30,10 @@ class DateUtilTest {
         System.out.println(parse);
         System.out.println(time);
     }
+
+    @Test
+    void timeRange() {
+        String s = DateUtil.timeRange(new Date(), new Date());
+        System.out.println(s);
+    }
 }

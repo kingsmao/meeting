@@ -1,6 +1,7 @@
 package com.chainup.service;
 
 import com.chainup.core.dto.MeetingRoomDto;
+import com.chainup.core.dto.MeetingRoomReserveDto;
 import com.chainup.core.dto.MyMeetingRoomDto;
 import com.chainup.core.params.ReserveMeetingParams;
 
@@ -38,13 +39,14 @@ public interface MeetingService {
     /**
      * 预定页面会议室详情
      *
+     * @param date      日期
      * @param beginTime 开始时间
      * @param endTime   结束时间
      * @param roomId    房间id
      * @param openId
      * @return
      */
-    MyMeetingRoomDto getMeetingRoomInfo(String beginTime, String endTime, int roomId, String openId);
+    MeetingRoomReserveDto getMeetingRoomInfo(String date, String beginTime, String endTime, int roomId, String openId);
 
     /**
      * 获取我的预定会议室详情

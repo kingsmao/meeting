@@ -1,6 +1,7 @@
 package com.chainup.service;
 
 import com.chainup.core.dto.MeetingRoomDto;
+import com.chainup.core.dto.MeetingRoomReserveDto;
 import com.chainup.core.dto.MyMeetingRoomDto;
 import com.chainup.core.params.ReserveMeetingParams;
 import org.junit.jupiter.api.AfterEach;
@@ -12,8 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author lili
@@ -64,8 +63,9 @@ class MeetingServiceTest {
 
     @Test
     void getMeetingRoomInfo() {
-        MyMeetingRoomDto meetingRoomInfo = meetingService.getMeetingRoomInfo("2020-10-20 11:00:00", "2020-10-20 17:00:00", 1, "oFmyS4vDVqBmLg-31AeJJm8AuzCY");
-        System.out.println(meetingRoomInfo);
+        MeetingRoomReserveDto reserveDto = meetingService.getMeetingRoomInfo("2020-10-20",
+                "11:00:00", "17:00:00", 1, "oFmyS4vDVqBmLg-31AeJJm8AuzCY");
+        System.out.println(reserveDto);
     }
 
 

@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 /**
+ * 搜索页面的数据结构
+ *
  * @author lili
  * @date 2020/10/17 16:54
  * @see

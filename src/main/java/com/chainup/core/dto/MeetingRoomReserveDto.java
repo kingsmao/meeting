@@ -1,24 +1,22 @@
 package com.chainup.core.dto;
 
-import io.swagger.annotations.ApiModel;
+import com.chainup.entity.Department;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
- * 包含了会议部门选项的会议室
+ * 会议室预定
  *
  * @author lili
- * @date 2020/10/17 17:17
+ * @date 2020/10/22 14:58
  * @see
  * @since
  */
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
-@ApiModel(description = "我的会议室")
-public class MyMeetingRoomDto {
+public class MeetingRoomReserveDto {
+
     @ApiModelProperty(value = "roomId")
     private int roomId;
     @ApiModelProperty(value = "房间名字")
@@ -38,6 +36,9 @@ public class MyMeetingRoomDto {
     @ApiModelProperty(value = "会议结束时间时间")
     private String endTime;
 
+    @ApiModelProperty(value = "日期")
+    private String date;
+
     @ApiModelProperty(value = "部门名字")
     private String departmentName;
 
@@ -49,5 +50,15 @@ public class MyMeetingRoomDto {
 
     @ApiModelProperty(value = "会议室状态描述")
     private String statusMsg;
+
+    /**
+     * 部门列表
+     */
+    @ApiModelProperty(value = "部门列表")
+    private List<Department> departmentList;
+
+
+    @ApiModelProperty(value = "房间已经有的会议")
+    private List<MeetingDto> meetingList;
 
 }

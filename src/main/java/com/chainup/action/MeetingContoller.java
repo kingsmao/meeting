@@ -3,6 +3,7 @@ package com.chainup.action;
 import com.chainup.core.config.ExceptionCode;
 import com.chainup.core.config.RequestResult;
 import com.chainup.core.dto.MeetingRoomDto;
+import com.chainup.core.dto.MeetingRoomReserveDto;
 import com.chainup.core.dto.MyMeetingRoomDto;
 import com.chainup.core.params.ReserveMeetingParams;
 import com.chainup.service.MeetingService;
@@ -58,17 +59,21 @@ public class MeetingContoller extends BaseController {
      */
     @ApiOperation(value = "某个会议室预定前的详情" + API_STATUS_DEVELOPING, httpMethod = "GET")
     @GetMapping("/meetingRoomInfo")
-    public RequestResult<MyMeetingRoomDto> meetingRoomInfo(@ApiParam(name = "beginTime", value = "开始时间")
-                                                           @RequestParam(name = "beginTime") String beginTime,
-                                                           @ApiParam(name = "endTime", value = "结束时间")
-                                                           @RequestParam(name = "endTime") String endTime,
-                                                           @ApiParam(name = "roomId", value = "房间id")
-                                                           @RequestParam(name = "roomId") int roomId,
-                                                           @ApiParam(name = "openId", value = "用户Id")
-                                                           @RequestParam(name = "openId") String openId) {
+    public RequestResult<MeetingRoomReserveDto> meetingRoomInfo(@ApiParam(name = "date", value = "预定日期")
+                                                                @RequestParam(name = "date") String date,
+                                                                @ApiParam(name = "beginTime", value = "开始时间")
+                                                                @RequestParam(name = "beginTime") String beginTime,
+                                                                @ApiParam(name = "endTime", value = "结束时间")
+                                                                @RequestParam(name = "endTime") String endTime,
+                                                                @ApiParam(name = "roomId", value = "房间id")
+                                                                @RequestParam(name = "roomId") int roomId,
+                                                                @ApiParam(name = "openId", value = "用户Id")
+                                                                @RequestParam(name = "openId") String openId) {
 
-        MyMeetingRoomDto myMeetingRoomDto = meetingService.getMeetingRoomInfo(beginTime, endTime, roomId, openId);
-        return success(myMeetingRoomDto);
+
+
+        MeetingRoomReserveDto reserveDto = meetingService.getMeetingRoomInfo(date, beginTime, endTime, roomId, openId);
+        return success(reserveDto);
     }
 
 

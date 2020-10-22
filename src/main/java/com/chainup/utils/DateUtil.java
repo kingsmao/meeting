@@ -186,6 +186,15 @@ public class DateUtil {
         return date;
     }
 
+    public static String timeRange(Date begin, Date endDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String dateBegin = sdf.format(begin);
+        String dateEnd = sdf.format(endDate);
+        return dateBegin + " --- " + dateEnd;
+    }
+
+
+
 
     public static Date test1(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

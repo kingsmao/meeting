@@ -2,6 +2,7 @@ package com.chainup.service.impl;
 
 import com.chainup.core.dto.MeetingDto;
 import com.chainup.core.dto.MeetingRoomDto;
+import com.chainup.core.dto.MeetingRoomReserveDto;
 import com.chainup.core.dto.MyMeetingRoomDto;
 import com.chainup.core.enums.MeetingStatus;
 import com.chainup.core.params.ReserveMeetingParams;
@@ -64,9 +65,11 @@ public class MeetingServiceImpl implements MeetingService {
                 Department department = departmentMapper.selectByPrimaryKey(departmentId);
                 meetingDtos.add(MeetingDto.builder()
                         .meetingId(meeting.getId().toString())
-                        .beginTime(meeting.getBeginTime().toString())
-                        .endTime(meeting.getEndTime().toString())
+                        .beginTime(meeting.getBeginTime().getTime())
+                        .endTime(meeting.getEndTime().getTime())
                         .meetingName(meeting.getName())
+                        .timeRange(DateUtil.timeRange(meeting.getBeginTime(), meeting.getEndTime()))
+                        .meetingSubject(department.getName() + "  " + meeting.getName())
                         .departmentName(department.getName())
                         .status(meeting.getStatus().toString())
                         .statusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()))
@@ -133,26 +136,26 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public MyMeetingRoomDto getMeetingRoomInfo(String beginTime, String endTime, int roomId, String openId) {
-        MyMeetingRoomDto myMeetingRoomDto = new MyMeetingRoomDto();
+    public MeetingRoomReserveDto getMeetingRoomInfo(String date, String beginTime, String endTime, int roomId, String openId) {
+        MeetingRoomReserveDto reserveDto = new MeetingRoomReserveDto();
         Room room = roomMapper.selectByPrimaryKey(roomId);
         if (Objects.isNull(room)) {
-            return myMeetingRoomDto;
+            return reserveDto;
         }
         User user = userMapper.findUserByOpenId(openId);
         if (Objects.isNull(user)) {
             log.warn("user not exist: openId:{}", openId);
-            return myMeetingRoomDto;
+            return reserveDto;
         }
-        myMeetingRoomDto.setBeginTime(beginTime);
-        myMeetingRoomDto.setEndTime(endTime);
-        myMeetingRoomDto.setRoomId(roomId);
-        myMeetingRoomDto.setRoomName(room.getName());
-        myMeetingRoomDto.setUserName(user.getNickName());
+        reserveDto.setDate(date);
+        reserveDto.setBeginTime(beginTime);
+        reserveDto.setEndTime(endTime);
+        reserveDto.setRoomId(roomId);
+        reserveDto.setRoomName(room.getName());
+        reserveDto.setUserName(user.getNickName());
         MeetingExample example = new MeetingExample();
-        //查找房间今天的会议室预定 todo beginTime endTime
-        Date dateStart = DateUtil.parse(beginTime);
-        Date dateEnd = DateUtil.parse(endTime);
+        Date dateStart = DateUtil.parse(date + " " + beginTime);
+        Date dateEnd = DateUtil.parse(date + " " + endTime);
         example.createCriteria().andRoomIdEqualTo(roomId).
                 andBeginTimeGreaterThanOrEqualTo(dateStart).andEndTimeLessThanOrEqualTo(dateEnd);
         List<Meeting> meetings = meetingMapper.selectByExample(example);
@@ -162,19 +165,21 @@ public class MeetingServiceImpl implements MeetingService {
             Department department = departmentMapper.selectByPrimaryKey(departmentId);
             meetingDtos.add(MeetingDto.builder()
                     .meetingId(meeting.getId().toString())
-                    .beginTime(meeting.getBeginTime().toString())
-                    .endTime(meeting.getEndTime().toString())
+                    .beginTime(meeting.getBeginTime().getTime())
+                    .endTime(meeting.getEndTime().getTime())
+                    .timeRange(DateUtil.timeRange(meeting.getBeginTime(), meeting.getEndTime()))
                     .meetingName(meeting.getName())
+                    .meetingSubject(department.getName() + "  " + meeting.getName())
                     .departmentName(department.getName())
                     .status(meeting.getStatus().toString())
                     .statusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()))
                     .meetingName(meeting.getName())
                     .userName(meeting.getName()).build());
         }
-        myMeetingRoomDto.setMeetingList(meetingDtos);
+        reserveDto.setMeetingList(meetingDtos);
         List<Department> departments = departmentMapper.selectByExample(new DepartmentExample());
-        myMeetingRoomDto.setDepartmentList(departments);
-        return myMeetingRoomDto;
+        reserveDto.setDepartmentList(departments);
+        return reserveDto;
     }
 
     @Override
@@ -185,6 +190,7 @@ public class MeetingServiceImpl implements MeetingService {
             log.warn("meeting not exist,id:{}", meetingId);
             return myMeetingRoomDto;
         }
+        myMeetingRoomDto.setMeetingId(meetingId);
         myMeetingRoomDto.setBeginTime(meeting.getBeginTime().toString());
         myMeetingRoomDto.setEndTime(meeting.getEndTime().toString());
         myMeetingRoomDto.setMeetingName(meeting.getName());
