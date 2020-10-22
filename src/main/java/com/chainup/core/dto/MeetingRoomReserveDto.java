@@ -21,6 +21,8 @@ public class MeetingRoomReserveDto {
     private int roomId;
     @ApiModelProperty(value = "房间名字")
     private String roomName;
+    @ApiModelProperty(value = "房间人数")
+    private String roomPersonCount;
     @ApiModelProperty(value = "房间描述")
     private String description;
 

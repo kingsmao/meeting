@@ -81,6 +81,9 @@ public class MeetingServiceImpl implements MeetingService {
             roomDto.setMeetingList(meetingDtos);
             results.add(roomDto);
         }
+        if (CollectionUtils.isNotEmpty(results)) {
+            results.sort(Comparator.comparingInt(dto -> dto.getMeetingList().size()));
+        }
         return results;
     }
 
@@ -168,6 +171,7 @@ public class MeetingServiceImpl implements MeetingService {
         reserveDto.setBeginTime(beginTime);
         reserveDto.setEndTime(endTime);
         reserveDto.setRoomId(roomId);
+        reserveDto.setRoomPersonCount(Splitter.on("|").splitToList(room.getDescription()).get(0));
         reserveDto.setRoomName(room.getName());
         reserveDto.setUserName(user.getNickName());
         MeetingExample example = new MeetingExample();
