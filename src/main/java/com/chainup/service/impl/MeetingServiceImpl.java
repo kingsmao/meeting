@@ -13,6 +13,7 @@ import com.chainup.dao.UserMapper;
 import com.chainup.entity.*;
 import com.chainup.service.MeetingService;
 import com.chainup.utils.DateUtil;
+import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,12 @@ public class MeetingServiceImpl implements MeetingService {
         List<MeetingRoomDto> results = new ArrayList<>();
         for (Room room : rooms) {
             Integer id = room.getId();
-            MeetingRoomDto roomDto = MeetingRoomDto.builder().roomId(id.toString()).roomName(room.getName()).
-                    description(room.getDescription()).build();
+            String description = room.getDescription();
+            MeetingRoomDto roomDto = MeetingRoomDto.builder()
+                    .roomId(id.toString())
+                    .roomName(room.getName())
+                    .description(description)
+                    .roomPersonCount(Splitter.on("|").splitToList(description).get(0)).build();
             MeetingExample example = new MeetingExample();
             //查找房间今天的会议室预定
             Date dateStart = DateUtil.parse(beginTime);
@@ -194,9 +199,12 @@ public class MeetingServiceImpl implements MeetingService {
             log.warn("meeting not exist,id:{}", meetingId);
             return myMeetingRoomDto;
         }
+        myMeetingRoomDto.setStatus(meeting.getStatus().toString());
+        myMeetingRoomDto.setStatusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()));
         myMeetingRoomDto.setMeetingId(meetingId);
         myMeetingRoomDto.setBeginTime(meeting.getBeginTime().toString());
         myMeetingRoomDto.setEndTime(meeting.getEndTime().toString());
+        myMeetingRoomDto.setDateTimeRange(DateUtil.timeDateRange(meeting.getBeginTime(), meeting.getEndTime()));
         myMeetingRoomDto.setMeetingName(meeting.getName());
         Integer roomId = meeting.getRoomId();
         Room room = roomMapper.selectByPrimaryKey(roomId);
@@ -208,6 +216,7 @@ public class MeetingServiceImpl implements MeetingService {
         Integer userId = meeting.getUserId();
         User user = userMapper.selectByPrimaryKey(userId);
         myMeetingRoomDto.setUserName(user.getUserName());
+        myMeetingRoomDto.setNickName(user.getNickName());
         return myMeetingRoomDto;
     }
 
