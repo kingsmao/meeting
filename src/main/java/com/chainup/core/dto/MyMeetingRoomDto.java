@@ -56,4 +56,8 @@ public class MyMeetingRoomDto {
     @ApiModelProperty(value = "会议室状态描述")
     private String statusMsg;
 
+
+    @ApiModelProperty(value = "会议名字/会议内容")
+    private String meetingSubject;
+
 }

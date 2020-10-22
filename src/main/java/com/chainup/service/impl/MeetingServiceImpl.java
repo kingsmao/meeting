@@ -106,6 +106,7 @@ public class MeetingServiceImpl implements MeetingService {
             Room room = roomMapper.selectByPrimaryKey(roomId);
             Department department = departmentMapper.selectByPrimaryKey(departmentId);
             MyMeetingRoomDto myMeetingRoomDto = new MyMeetingRoomDto();
+            myMeetingRoomDto.setMeetingSubject(department.getName() + "  " + meeting.getName());
             myMeetingRoomDto.setNickName(user.getUserName());
             myMeetingRoomDto.setUserName(user.getNickName());
             myMeetingRoomDto.setDepartmentName(department.getName());
