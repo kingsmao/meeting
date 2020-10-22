@@ -43,7 +43,7 @@ public class MeetingServiceImpl implements MeetingService {
 
 
     @Override
-    public List<MeetingRoomDto> availableRoomByTime(String beginTime, String endTime) {
+    public List<MeetingRoomDto> availableRoomByTime(String date, String beginTime, String endTime) {
         List<Room> rooms = roomMapper.selectByExample(new RoomExample());
         List<MeetingRoomDto> results = new ArrayList<>();
         for (Room room : rooms) {
@@ -56,8 +56,8 @@ public class MeetingServiceImpl implements MeetingService {
                     .roomPersonCount(Splitter.on("|").splitToList(description).get(0)).build();
             MeetingExample example = new MeetingExample();
             //查找房间今天的会议室预定
-            Date dateStart = DateUtil.parse(beginTime);
-            Date dateEnd = DateUtil.parse(endTime);
+            Date dateStart = DateUtil.parse(date + " 00:00:00");
+            Date dateEnd = DateUtil.parse(date + " 23:59:59");
             example.createCriteria().andRoomIdEqualTo(id).
                     andBeginTimeGreaterThanOrEqualTo(dateStart).andEndTimeLessThanOrEqualTo(dateEnd);
             List<Meeting> meetings = meetingMapper.selectByExample(example);
@@ -170,8 +170,9 @@ public class MeetingServiceImpl implements MeetingService {
         reserveDto.setRoomName(room.getName());
         reserveDto.setUserName(user.getNickName());
         MeetingExample example = new MeetingExample();
-        Date dateStart = DateUtil.parse(date + " " + beginTime);
-        Date dateEnd = DateUtil.parse(date + " " + endTime);
+        //显示当天所有会议室
+        Date dateStart = DateUtil.parse(date + " 00:00:00");
+        Date dateEnd = DateUtil.parse(date + " 23:59:00");
         example.createCriteria().andRoomIdEqualTo(roomId).
                 andBeginTimeGreaterThanOrEqualTo(dateStart).andEndTimeLessThanOrEqualTo(dateEnd);
         List<Meeting> meetings = meetingMapper.selectByExample(example);
@@ -211,8 +212,8 @@ public class MeetingServiceImpl implements MeetingService {
         myMeetingRoomDto.setMeetingId(meetingId);
         myMeetingRoomDto.setBeginTime(meeting.getBeginTime().toString());
         myMeetingRoomDto.setEndTime(meeting.getEndTime().toString());
-        if (meeting.getEndTime().getTime() >= System.currentTimeMillis()) {
-            //结束时间比当前大，说明会议室没开始，不可以删除
+        if (meeting.getBeginTime().getTime() <= System.currentTimeMillis()) {
+            //只是没开始才开始删除
             myMeetingRoomDto.setCanDelete(false);
         }
         myMeetingRoomDto.setDateTimeRange(DateUtil.timeDateRange(meeting.getBeginTime(), meeting.getEndTime()));

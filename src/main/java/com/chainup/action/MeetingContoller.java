@@ -11,12 +11,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Comparator;
 import java.util.List;
 
 import static com.chainup.core.config.WebConstants.API_STATUS_DEVELOPING;
@@ -42,14 +40,14 @@ public class MeetingContoller extends BaseController {
      */
     @ApiOperation(value = "通过时间查找可用会议室" + API_STATUS_DEVELOPING, httpMethod = "GET")
     @GetMapping("/availableRoomByTime")
-    public RequestResult<List<MeetingRoomDto>> availableRoomByTime(@ApiParam(name = "beginTime", value = "开始时间")
+    public RequestResult<List<MeetingRoomDto>> availableRoomByTime(@ApiParam(name = "date", value = "日期")
+                                                                   @RequestParam(name = "date") String date,
+                                                                   @ApiParam(name = "beginTime", value = "开始时间")
                                                                    @RequestParam(name = "beginTime") String beginTime,
                                                                    @ApiParam(name = "endTime", value = "结束时间")
                                                                    @RequestParam(name = "endTime") String endTime) {
 
-        beginTime = beginTime + ":00";
-        endTime = endTime + ":00";
-        List<MeetingRoomDto> data = meetingService.availableRoomByTime(beginTime, endTime);
+        List<MeetingRoomDto> data = meetingService.availableRoomByTime(date, beginTime + ":00", endTime + ":00");
         return success(data);
     }
 
