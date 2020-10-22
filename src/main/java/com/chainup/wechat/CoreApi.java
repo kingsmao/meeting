@@ -72,6 +72,10 @@ public class CoreApi extends BaseController {
                 sessionKey = jsonStr.getString("session_key");
                 map.put("openid", openid);
                 map.put("session_key", sessionKey);
+                //这块缺少授权机  todo  没有获取用户信息操作
+                if (!userService.isUserExist(openid)) {
+                    userService.createUser("", openid, "");
+                }
                 log.info("openid:{},session_key:{}", openid, sessionKey);
             }
         } catch (Exception e) {
