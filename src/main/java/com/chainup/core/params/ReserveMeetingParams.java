@@ -38,6 +38,9 @@ public class ReserveMeetingParams {
     @ApiModelProperty(value = "会议名字/会议内容")
     private String meetingName;
 
+    @ApiModelProperty(value = "用户真实名字")
+    private String userName;
+
     @ApiModelProperty(value = "用户open id")
     private String openId;
 

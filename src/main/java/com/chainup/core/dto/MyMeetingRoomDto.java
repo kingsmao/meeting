@@ -38,6 +38,9 @@ public class MyMeetingRoomDto {
     @ApiModelProperty(value = "会议开始时间")
     private String beginTime;
 
+    @ApiModelProperty(value = "会议开始时间")
+    private long beginTimeStamp;
+
     @ApiModelProperty(value = "会议结束时间时间")
     private String endTime;
 

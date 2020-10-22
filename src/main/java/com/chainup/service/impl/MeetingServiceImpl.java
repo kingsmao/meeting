@@ -113,9 +113,13 @@ public class MeetingServiceImpl implements MeetingService {
             myMeetingRoomDto.setMeetingName(meeting.getName());
             myMeetingRoomDto.setBeginTime(meeting.getBeginTime().toString());
             myMeetingRoomDto.setEndTime(meeting.getEndTime().toString());
+            myMeetingRoomDto.setBeginTimeStamp(meeting.getBeginTime().getTime());
             myMeetingRoomDto.setMeetingId(meeting.getId());
             myMeetingRoomDto.setStatusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()));
             myMeetingRoomDtos.add(myMeetingRoomDto);
+        }
+        if (CollectionUtils.isNotEmpty(myMeetingRoomDtos)) {
+            myMeetingRoomDtos.sort(Comparator.comparingLong(x -> (int) x.getBeginTimeStamp()));
         }
         return myMeetingRoomDtos;
     }
@@ -129,6 +133,8 @@ public class MeetingServiceImpl implements MeetingService {
             log.warn("user not exist: openId:{}, reserveMeetingParams:{}", openId, reserveMeetingParams);
             return;
         }
+        user.setUserName(reserveMeetingParams.getUserName());
+        userMapper.updateByPrimaryKey(user);
         meeting.setName(reserveMeetingParams.getMeetingName());
         meeting.setUserId(user.getId());
         meeting.setBeginTime(DateUtil.parse(reserveMeetingParams.getBeginTime()));
