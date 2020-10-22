@@ -65,6 +65,9 @@ public class MeetingServiceImpl implements MeetingService {
             for (Meeting meeting : meetings) {
                 Integer departmentId = meeting.getDepartmentId();
                 Department department = departmentMapper.selectByPrimaryKey(departmentId);
+                if (Objects.isNull(department)) {
+                    continue;
+                }
                 meetingDtos.add(MeetingDto.builder()
                         .meetingId(meeting.getId().toString())
                         .beginTime(meeting.getBeginTime().getTime())
