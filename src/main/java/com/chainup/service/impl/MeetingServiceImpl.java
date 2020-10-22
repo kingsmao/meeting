@@ -55,10 +55,10 @@ public class MeetingServiceImpl implements MeetingService {
             example.createCriteria().andRoomIdEqualTo(id).
                     andBeginTimeGreaterThanOrEqualTo(dateStart).andEndTimeLessThanOrEqualTo(dateEnd);
             List<Meeting> meetings = meetingMapper.selectByExample(example);
-//            if (CollectionUtils.isNotEmpty(meetings)) {
-//                //该房间被预定了，直接跳过
-//                continue;
-//            }
+            if (CollectionUtils.isNotEmpty(meetings)) {
+                //该房间被预定了，直接跳过当前房间，不作为展示
+                continue;
+            }
             List<MeetingDto> meetingDtos = new ArrayList<>();
             for (Meeting meeting : meetings) {
                 Integer departmentId = meeting.getDepartmentId();
