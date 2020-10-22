@@ -119,6 +119,7 @@ public class MeetingServiceImpl implements MeetingService {
             myMeetingRoomDto.setEndTime(DateUtil.dateWithPattern(meeting.getEndTime(), "HH:mm"));
             myMeetingRoomDto.setBeginTimeStamp(meeting.getBeginTime().getTime());
             myMeetingRoomDto.setMeetingId(meeting.getId());
+            myMeetingRoomDto.setStatus(meeting.getStatus().toString());
             myMeetingRoomDto.setStatusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()));
             myMeetingRoomDtos.add(myMeetingRoomDto);
         }
