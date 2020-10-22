@@ -35,6 +35,9 @@ public class MyMeetingRoomDto {
     @ApiModelProperty(value = "会议日期时间范围")
     private String dateTimeRange;
 
+    @ApiModelProperty(value = "会议日期时间范围")
+    private String date;
+
     @ApiModelProperty(value = "会议开始时间")
     private String beginTime;
 

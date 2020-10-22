@@ -101,6 +101,9 @@ public class MeetingServiceImpl implements MeetingService {
             Integer departmentId = meeting.getDepartmentId();
             Room room = roomMapper.selectByPrimaryKey(roomId);
             Department department = departmentMapper.selectByPrimaryKey(departmentId);
+            if (Objects.isNull(department) || Objects.isNull(room)) {
+                continue;
+            }
             MyMeetingRoomDto myMeetingRoomDto = new MyMeetingRoomDto();
             myMeetingRoomDto.setMeetingSubject(department.getName() + "  " + meeting.getName());
             myMeetingRoomDto.setNickName(user.getUserName());
@@ -111,8 +114,9 @@ public class MeetingServiceImpl implements MeetingService {
             myMeetingRoomDto.setRoomName(room.getName());
             myMeetingRoomDto.setDescription(meeting.getDepartmentId().toString());
             myMeetingRoomDto.setMeetingName(meeting.getName());
-            myMeetingRoomDto.setBeginTime(meeting.getBeginTime().toString());
-            myMeetingRoomDto.setEndTime(meeting.getEndTime().toString());
+            myMeetingRoomDto.setDate(DateUtil.dateWithPattern(meeting.getBeginTime(), "yyyy-MM-dd"));
+            myMeetingRoomDto.setBeginTime(DateUtil.dateWithPattern(meeting.getBeginTime(), "HH:mm"));
+            myMeetingRoomDto.setEndTime(DateUtil.dateWithPattern(meeting.getEndTime(), "HH:mm"));
             myMeetingRoomDto.setBeginTimeStamp(meeting.getBeginTime().getTime());
             myMeetingRoomDto.setMeetingId(meeting.getId());
             myMeetingRoomDto.setStatusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()));

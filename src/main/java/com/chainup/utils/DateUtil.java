@@ -76,6 +76,12 @@ public class DateUtil {
         return str;
     }
 
+    public static String dateWithPattern(Date date, String pattern) {
+        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+        String str = sdf.format(date);
+        return str;
+    }
+
     /**
      * str -->date
      *
