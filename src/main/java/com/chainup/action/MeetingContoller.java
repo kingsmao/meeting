@@ -73,7 +73,8 @@ public class MeetingContoller extends BaseController {
                                                                 @RequestParam(name = "openId") String openId) {
 
 
-
+        beginTime = beginTime + ":00";
+        endTime = endTime + ":00";
         MeetingRoomReserveDto reserveDto = meetingService.getMeetingRoomInfo(date, beginTime, endTime, roomId, openId);
         return success(reserveDto);
     }
