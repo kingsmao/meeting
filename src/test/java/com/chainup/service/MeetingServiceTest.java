@@ -24,6 +24,9 @@ import java.util.List;
 @SpringBootTest
 class MeetingServiceTest {
 
+    private static final String CHEN_ZHI_QI = "oFmyS4jjyiihYDmTWql5hEdTIjqA";
+    private static final String LI_LI = "oFmyS4vDVqBmLg-31AeJJm8AuzCY";
+
     @Autowired
     private MeetingService meetingService;
 
@@ -39,19 +42,19 @@ class MeetingServiceTest {
 
     @Test
     void getMyMeetingList() {
-        List<MyMeetingRoomDto> myMeetingList = meetingService.getMyMeetingList(LiLi_OPEN_ID);
+        List<MyMeetingRoomDto> myMeetingList = meetingService.getMyMeetingList(CHEN_ZHI_QI);
         System.out.println(myMeetingList);
     }
 
     @Test
     void reserveMeetingRoom() {
         ReserveMeetingParams params = new ReserveMeetingParams();
-        params.setMeetingName("alibaba 年度复盘");
-        params.setBeginTime("2020-10-20 14:00:00");
-        params.setEndTime("2020-10-20 15:00:00");
-        params.setOpenId("oFmyS4vDVqBmLg-31AeJJm8AuzCY");
-        params.setDepartmentId(1);
-        params.setRoomId(1);
+        params.setMeetingName("Chainp年度复盘");
+        params.setBeginTime("2020-10-22 17:00:00");
+        params.setEndTime("2020-10-22 19:00:00");
+        params.setOpenId(CHEN_ZHI_QI);
+        params.setDepartmentId(3);
+        params.setRoomId(2);
         meetingService.reserveMeetingRoom(params);
     }
 

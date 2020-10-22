@@ -47,7 +47,8 @@ public class MeetingServiceImpl implements MeetingService {
         List<MeetingRoomDto> results = new ArrayList<>();
         for (Room room : rooms) {
             Integer id = room.getId();
-            MeetingRoomDto roomDto = MeetingRoomDto.builder().roomId(id.toString()).roomName(room.getName()).description(room.getDescription()).build();
+            MeetingRoomDto roomDto = MeetingRoomDto.builder().roomId(id.toString()).roomName(room.getName()).
+                    description(room.getDescription()).build();
             MeetingExample example = new MeetingExample();
             //查找房间今天的会议室预定
             Date dateStart = DateUtil.parse(beginTime);
@@ -100,7 +101,10 @@ public class MeetingServiceImpl implements MeetingService {
             Room room = roomMapper.selectByPrimaryKey(roomId);
             Department department = departmentMapper.selectByPrimaryKey(departmentId);
             MyMeetingRoomDto myMeetingRoomDto = new MyMeetingRoomDto();
+            myMeetingRoomDto.setNickName(user.getUserName());
+            myMeetingRoomDto.setUserName(user.getNickName());
             myMeetingRoomDto.setDepartmentName(department.getName());
+            myMeetingRoomDto.setDateTimeRange(DateUtil.timeDateRange(meeting.getBeginTime(), meeting.getEndTime()));
             myMeetingRoomDto.setRoomId(roomId);
             myMeetingRoomDto.setRoomName(room.getName());
             myMeetingRoomDto.setDescription(meeting.getDepartmentId().toString());

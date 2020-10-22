@@ -32,6 +32,9 @@ public class MyMeetingRoomDto {
     @ApiModelProperty(value = "会议名字/会议内容")
     private String meetingName;
 
+    @ApiModelProperty(value = "会议日期时间范围")
+    private String dateTimeRange;
+
     @ApiModelProperty(value = "会议开始时间")
     private String beginTime;
 
@@ -41,8 +44,11 @@ public class MyMeetingRoomDto {
     @ApiModelProperty(value = "部门名字")
     private String departmentName;
 
-    @ApiModelProperty(value = "预订人")
+    @ApiModelProperty(value = "预订真实姓名")
     private String userName;
+
+    @ApiModelProperty(value = "预订用户的昵称")
+    private String nickName;
 
     @ApiModelProperty(value = "会议室状态")
     private String status;

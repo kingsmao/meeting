@@ -19,25 +19,27 @@ public class DateUtil {
 
     /**
      * 求两个date类型之间的分钟差值
+     *
      * @param starTime
      * @param endTime
      * @return
      */
     public static int getMin(Date starTime, Date endTime) {
-        return (int)(endTime.getTime() - starTime.getTime())/(1000*60);
+        return (int) (endTime.getTime() - starTime.getTime()) / (1000 * 60);
     }
 
     /**
      * 返回时间，不包含是秒 2019-02-26 10:36
+     *
      * @param date
      * @return
      */
-    public static Date getYMD(Date date){
+    public static Date getYMD(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String str = sdf.format(new Date());
         Date date1 = null;
         try {
-            date1 =  sdf.parse(str);
+            date1 = sdf.parse(str);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -46,15 +48,16 @@ public class DateUtil {
 
     /**
      * 返回时间，2019-02-26 10:36
+     *
      * @param date
      * @return
      */
-    public static Date getYMD2(Date date){
+    public static Date getYMD2(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String str = sdf.format(date);
         Date date1 = null;
         try {
-            date1 =  sdf.parse(str);
+            date1 = sdf.parse(str);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -63,10 +66,11 @@ public class DateUtil {
 
     /**
      * 返回字符串类型日期，
+     *
      * @param date
      * @return
      */
-    public static String date2Str(Date date){
+    public static String date2Str(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String str = sdf.format(date);
         return str;
@@ -74,10 +78,11 @@ public class DateUtil {
 
     /**
      * str -->date
+     *
      * @param str
      * @return
      */
-    public static Date str2Date(String str){
+    public static Date str2Date(String str) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date = null;
         try {
@@ -87,12 +92,14 @@ public class DateUtil {
         }
         return date;
     }
+
     /**
      * str -->date
+     *
      * @param str
      * @return
      */
-    public static Date str2TDate(String str){
+    public static Date str2TDate(String str) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = null;
         try {
@@ -104,8 +111,7 @@ public class DateUtil {
     }
 
 
-
-    public static Date getDatePlus(Date date){
+    public static Date getDatePlus(Date date) {
         //计算两天后的时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
@@ -119,11 +125,12 @@ public class DateUtil {
 
     /**
      * 时间+分钟，返回结果不包含秒
+     *
      * @param date
      * @param mins
      * @return
      */
-    public static Date getPlus(Date date,Integer mins){
+    public static Date getPlus(Date date, Integer mins) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date date1 = null;
         try {
@@ -137,8 +144,9 @@ public class DateUtil {
 
     /**
      * 计算可服务时间
-     *
+     * <p>
      * 上午earnTime为满的，下午需要有earnTime
+     *
      * @param serviceStartTime
      * @param serviceEndTime
      * @param earnTime
@@ -149,8 +157,8 @@ public class DateUtil {
         double b = getMin(serviceStartTime,serviceEndTime) * (new BigDecimal((float)consumeTime/earnTime).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
         return getPlus(serviceStartTime, (int) b);
     }*/
-    public static Date countRat(Date serviceStartTime,Date serviceEndTime,Integer earnTime, Integer consumeTime, String dtype){
-        Integer earnTimeByType = getEarnTime(serviceStartTime,serviceEndTime,earnTime,dtype);
+    public static Date countRat(Date serviceStartTime, Date serviceEndTime, Integer earnTime, Integer consumeTime, String dtype) {
+        Integer earnTimeByType = getEarnTime(serviceStartTime, serviceEndTime, earnTime, dtype);
         if (dtype.equals("am")) {
             if (consumeTime == 0) {
                 return serviceStartTime;
@@ -171,7 +179,6 @@ public class DateUtil {
 
 
     /**
-     *
      * @param dateString 2019-02-26 09:30
      * @return
      */
@@ -194,14 +201,20 @@ public class DateUtil {
     }
 
 
+    public static String timeDateRange(Date begin, Date endDate) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        String dateBegin = sdf.format(begin);
+        String dateEnd = sdf.format(endDate);
+        return dateBegin + " --- " + dateEnd;
+    }
 
 
-    public static Date test1(){
+    public static Date test1() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String a = "2019-02-26 09:30:00";
         Date date1 = null;
         try {
-            date1 =  sdf.parse(a);
+            date1 = sdf.parse(a);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -209,12 +222,12 @@ public class DateUtil {
         return date1;
     }
 
-    public static Date test2(){
+    public static Date test2() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String a = "2019-02-26 20:00:00";
         Date date1 = null;
         try {
-            date1 =  sdf.parse(a);
+            date1 = sdf.parse(a);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -224,13 +237,14 @@ public class DateUtil {
 
     /**
      * 时间+分钟，返回结果不包含秒
+     *
      * @param date
      * @return
      */
-    public static Date get12(Date date){
+    public static Date get12(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String str12 = " 12:00:00";
-        String s1 = sdf.format(date).substring(0,10);
+        String s1 = sdf.format(date).substring(0, 10);
         Date date1 = null;
         try {
             date1 = sdf.parse(s1 + str12);
@@ -242,7 +256,6 @@ public class DateUtil {
     }
 
     /**
-     *
      * @param serviceStarTime
      * @param serviceEndTime
      * @param earnTime
@@ -250,28 +263,27 @@ public class DateUtil {
      * @return
      */
     public static Integer getEarnTime(Date serviceStarTime, Date serviceEndTime, Integer earnTime, String etype) {
-        Integer a = getMin(serviceStarTime,get12(serviceStarTime));
-        Integer b = getMin(serviceStarTime,serviceEndTime);
-        double ray = getRay(a,b);
+        Integer a = getMin(serviceStarTime, get12(serviceStarTime));
+        Integer b = getMin(serviceStarTime, serviceEndTime);
+        double ray = getRay(a, b);
         if (etype.equals("am")) {
             return (int) ray * earnTime;
         } else {
-            return (int)(1.0 - ray * earnTime);
+            return (int) (1.0 - ray * earnTime);
         }
     }
 
 
     /**
      * 输入分子分母，得出比例
+     *
      * @param a 分子
      * @param b 分母
      * @return
      */
     public static double getRay(Integer a, Integer b) {
-        return new BigDecimal((float)a/b).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return new BigDecimal((float) a / b).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
-
-
 
 
 }

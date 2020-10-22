@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * @author lili
  * @date 2020/10/21 0:36
@@ -35,5 +33,59 @@ class DateUtilTest {
     void timeRange() {
         String s = DateUtil.timeRange(new Date(), new Date());
         System.out.println(s);
+    }
+
+    @Test
+    void getMin() {
+    }
+
+    @Test
+    void getYMD() {
+    }
+
+    @Test
+    void getYMD2() {
+    }
+
+    @Test
+    void date2Str() {
+    }
+
+    @Test
+    void str2Date() {
+    }
+
+    @Test
+    void str2TDate() {
+    }
+
+    @Test
+    void getDatePlus() {
+    }
+
+    @Test
+    void getPlus() {
+    }
+
+    @Test
+    void countRat() {
+    }
+
+    @Test
+    void timeDateRange() {
+        String s = DateUtil.timeDateRange(new Date(), new Date());
+        System.out.println(s);
+    }
+
+    @Test
+    void get12() {
+    }
+
+    @Test
+    void getEarnTime() {
+    }
+
+    @Test
+    void getRay() {
     }
 }
