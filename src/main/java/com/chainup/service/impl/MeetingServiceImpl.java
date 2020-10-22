@@ -119,7 +119,7 @@ public class MeetingServiceImpl implements MeetingService {
             myMeetingRoomDtos.add(myMeetingRoomDto);
         }
         if (CollectionUtils.isNotEmpty(myMeetingRoomDtos)) {
-            myMeetingRoomDtos.sort(Comparator.comparingLong(x -> (int) x.getBeginTimeStamp()));
+            myMeetingRoomDtos.sort((x1, x2) -> (int) (x2.getBeginTimeStamp() - x1.getBeginTimeStamp()));
         }
         return myMeetingRoomDtos;
     }
@@ -207,6 +207,10 @@ public class MeetingServiceImpl implements MeetingService {
         myMeetingRoomDto.setMeetingId(meetingId);
         myMeetingRoomDto.setBeginTime(meeting.getBeginTime().toString());
         myMeetingRoomDto.setEndTime(meeting.getEndTime().toString());
+        if (meeting.getEndTime().getTime() >= System.currentTimeMillis()) {
+            //结束时间比当前大，说明会议室没开始，不可以删除
+            myMeetingRoomDto.setCanDelete(false);
+        }
         myMeetingRoomDto.setDateTimeRange(DateUtil.timeDateRange(meeting.getBeginTime(), meeting.getEndTime()));
         myMeetingRoomDto.setMeetingName(meeting.getName());
         Integer roomId = meeting.getRoomId();
@@ -226,5 +230,24 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public void cancelMeetingRoom(int meetingId) {
         meetingMapper.deleteByPrimaryKey(meetingId);
+    }
+
+    @Override
+    public void invalidMeetingTime() {
+        List<Meeting> meetings = meetingMapper.selectByExample(new MeetingExample());
+        if (CollectionUtils.isNotEmpty(meetings)) {
+            for (Meeting meeting : meetings) {
+                long startTime = meeting.getBeginTime().getTime();
+                long endTime = meeting.getEndTime().getTime();
+                long now = System.currentTimeMillis();
+                if (endTime <= now) {
+                    meeting.setStatus(MeetingStatus.FINISHED.byteStatus());
+                }
+                if (startTime <= now && endTime >= now) {
+                    meeting.setStatus(MeetingStatus.RUNNING.byteStatus());
+                }
+                meetingMapper.updateByPrimaryKey(meeting);
+            }
+        }
     }
 }

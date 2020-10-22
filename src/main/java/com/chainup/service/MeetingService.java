@@ -62,4 +62,9 @@ public interface MeetingService {
      * @param meetingId 会议室id
      */
     void cancelMeetingRoom(int meetingId);
+
+    /**
+     * 定时任务更新会议室状态
+     */
+    void invalidMeetingTime();
 }

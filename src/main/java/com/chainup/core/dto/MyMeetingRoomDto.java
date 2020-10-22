@@ -63,4 +63,7 @@ public class MyMeetingRoomDto {
     @ApiModelProperty(value = "会议名字/会议内容")
     private String meetingSubject;
 
+    @ApiModelProperty(value = "是否可以删除")
+    private boolean canDelete = true;
+
 }
