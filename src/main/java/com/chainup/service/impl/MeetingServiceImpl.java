@@ -215,11 +215,12 @@ public class MeetingServiceImpl implements MeetingService {
             log.warn("meeting not exist,id:{}", meetingId);
             return myMeetingRoomDto;
         }
+        myMeetingRoomDto.setDate(DateUtil.dateWithPattern(meeting.getBeginTime(), "yyyy-MM-dd"));
+        myMeetingRoomDto.setBeginTime(DateUtil.dateWithPattern(meeting.getBeginTime(), "HH:mm"));
+        myMeetingRoomDto.setEndTime(DateUtil.dateWithPattern(meeting.getEndTime(), "HH:mm"));
         myMeetingRoomDto.setStatus(meeting.getStatus().toString());
         myMeetingRoomDto.setStatusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()));
         myMeetingRoomDto.setMeetingId(meetingId);
-        myMeetingRoomDto.setBeginTime(meeting.getBeginTime().toString());
-        myMeetingRoomDto.setEndTime(meeting.getEndTime().toString());
         if (meeting.getBeginTime().getTime() <= System.currentTimeMillis()) {
             //只是没开始才开始删除
             myMeetingRoomDto.setCanDelete(false);
