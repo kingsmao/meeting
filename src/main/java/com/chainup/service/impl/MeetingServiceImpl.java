@@ -68,13 +68,19 @@ public class MeetingServiceImpl implements MeetingService {
                 if (Objects.isNull(department)) {
                     continue;
                 }
+                Integer userId = meeting.getUserId();
+                User user = userMapper.selectByPrimaryKey(userId);
+                String userName = "";
+                if (Objects.nonNull(user)) {
+                    userName = user.getUserName();
+                }
                 meetingDtos.add(MeetingDto.builder()
                         .meetingId(meeting.getId().toString())
                         .beginTime(meeting.getBeginTime().getTime())
                         .endTime(meeting.getEndTime().getTime())
                         .meetingName(meeting.getName())
                         .timeRange(DateUtil.timeRange(meeting.getBeginTime(), meeting.getEndTime()))
-                        .meetingSubject(department.getName() + "  " + meeting.getName())
+                        .meetingSubject(department.getName() + " " + meeting.getName() + " " + userName)
                         .departmentName(department.getName())
                         .status(meeting.getStatus().toString())
                         .statusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()))
@@ -194,7 +200,7 @@ public class MeetingServiceImpl implements MeetingService {
                     .endTime(meeting.getEndTime().getTime())
                     .timeRange(DateUtil.timeRange(meeting.getBeginTime(), meeting.getEndTime()))
                     .meetingName(meeting.getName())
-                    .meetingSubject(department.getName() + "  " + meeting.getName())
+                    .meetingSubject(department.getName() + " " + meeting.getName() + " " + user.getUserName())
                     .departmentName(department.getName())
                     .status(meeting.getStatus().toString())
                     .statusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()))
