@@ -143,6 +143,8 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public void reserveMeetingRoom(ReserveMeetingParams reserveMeetingParams) {
+        log.info(reserveMeetingParams.toString());
+        //todo 顺延四周开关
         Meeting meeting = new Meeting();
         String openId = reserveMeetingParams.getOpenId();
         User user = userMapper.findUserByOpenId(openId);

@@ -44,4 +44,7 @@ public class ReserveMeetingParams {
     @ApiModelProperty(value = "用户open id")
     private String openId;
 
+    @ApiModelProperty(value = "顺延四周开关")
+    private Boolean delaySwitch;
+
 }
