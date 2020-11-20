@@ -7,6 +7,7 @@ import com.chainup.core.domain.AccessToken;
 import com.chainup.service.UserService;
 import com.chainup.utils.CoreUrl;
 import com.chainup.utils.HttpUtil;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ public class CoreApi extends BaseController {
         log.info("进入到发送模板消息方法");
         String jsonStr = "";
         try {
-            jsonStr = HttpUtil.executeJsonParamHttpPost(CoreUrl.sendTemplateMessageURL() + AccessToken.getAccessToken(), textMsg);
+            jsonStr = HttpUtil.executeJsonParamHttpPost(CoreUrl.sendsubscribeMessageURL() + "39_nfUXiKJ-K2IlX73TWerVHLj99BhKB9xqOd0Yr57Hlmql-0QtcKOUX4S8sV3qB65tBtX9MxCSXhGSaGTM84RsUYp52z0-KgzTDUDQIU3zM8WkypVfK9gfxPc4tT-m2EeTXLhaSMUfnbl7s2OGCCAgAIATTR", textMsg);
             JSONObject jsonObject = JSONObject.parseObject(jsonStr);
             //System.out.println(new GsonBuilder().serializeNulls().setPrettyPrinting().create().toJson(jsonObject));
             log.info("返回消息:" + jsonStr);
@@ -107,4 +108,9 @@ public class CoreApi extends BaseController {
         }
         return "fail";
     }
+/*
+    public static void main(String[] args) {
+        String msg = "{\"touser\":\"oA-SP4lOq6GOeJp_5OoqyhSjzGBI\",\"template_id\":\"g4llUD-SEs_CT8VsiIjDnRJ4wj7pKbnSD6nxIoS2iyY\",\"miniprogram_state\":\"developer\",\"lang\":\"zh_CN\",\"data\":{\"thing1\":{\"value\":\"339208499\"},\"thing2\":{\"value\":\"2015年01月05日\"},\"character_string3\":{\"value\":\"aaaaaaaaaaaaaaa\"},\"thing5\":{\"value\":\"广州市新港中路397号\"},\"thing4\":{\"value\":\"广州市新港中路397号\"}}}";
+        sendTemplateMessage(msg);
+    }*/
 }

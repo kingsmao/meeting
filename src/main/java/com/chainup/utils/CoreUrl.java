@@ -20,8 +20,21 @@ public class CoreUrl {
         return "https://api.weixin.qq.com/sns/jscode2session?appid=" + appid + "&secret=" + secret + "&js_code=" + code + "&grant_type=authorization_code";
     }
 
+    /**
+     * @Deprecated  该接口已被官方废弃
+     * @return
+     */
+    @Deprecated
     public static String sendTemplateMessageURL() {
         return "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=";
+    }
+
+    /**
+     * 向用户推送订阅消息
+     * @return
+     */
+    public static String sendsubscribeMessageURL() {
+        return "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=";
     }
 
     public static String getAccessTokenURL(String appid, String secret) {
