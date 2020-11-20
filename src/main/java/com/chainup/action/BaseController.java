@@ -3,10 +3,12 @@ package com.chainup.action;
 import com.alibaba.fastjson.JSON;
 import com.chainup.core.config.ExceptionCode;
 import com.chainup.core.config.RequestResult;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Slf4j
 public abstract class BaseController {
@@ -59,6 +61,8 @@ public abstract class BaseController {
      */
     public final <T> RequestResult<T> success() {
         RequestResult<T> rr = new RequestResult<>();
+        Map<String, Object> data = Maps.newHashMap();
+        data.put("data", "OK");
         rr.setCode(ExceptionCode.SUCCESS.getCode());
         rr.setMessage(ExceptionCode.SUCCESS.getMessage());
         String requestURI = request.getRequestURI();
