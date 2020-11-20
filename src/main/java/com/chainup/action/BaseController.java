@@ -65,6 +65,7 @@ public abstract class BaseController {
         data.put("data", "OK");
         rr.setCode(ExceptionCode.SUCCESS.getCode());
         rr.setMessage(ExceptionCode.SUCCESS.getMessage());
+        rr.setData((T) data);
         String requestURI = request.getRequestURI();
         log.info("requestURI:{}, result json: {}", requestURI, JSON.toJSONString(rr));
         return rr;
