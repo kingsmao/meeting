@@ -280,6 +280,12 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public void remindMeeting() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        log.info("+++++++++++++开始拉取订阅通知+++++++++++++++++++");
         MeetingExample example = new MeetingExample();
         // 结束的就不扫描了
         example.createCriteria().andStatusEqualTo(MeetingStatus.NOT_START.byteStatus());
