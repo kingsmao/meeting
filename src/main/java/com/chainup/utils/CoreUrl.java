@@ -40,4 +40,12 @@ public class CoreUrl {
     public static String getAccessTokenURL(String appid, String secret) {
         return "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appid + "&secret=" + secret;
     }
+
+    /**
+     * 消息订阅推送的模板id
+     * @return
+     */
+    public static String getSubscribeMessageTemplateId() {
+        return "g4llUD-SEs_CT8VsiIjDnRJ4wj7pKbnSD6nxIoS2iyY";
+    }
 }

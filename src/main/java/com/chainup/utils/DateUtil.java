@@ -76,6 +76,17 @@ public class DateUtil {
         return str;
     }
 
+    /**
+     * 返回小时和分钟，24h制，例如 12：30
+     * @param date
+     * @return
+     */
+    public static String date2StrHourMin(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String str = sdf.format(date);
+        return str;
+    }
+
     public static String dateWithPattern(Date date, String pattern) {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String str = sdf.format(date);

@@ -52,4 +52,9 @@ public class MeetingDto {
     @ApiModelProperty(value = "会议室状态描述")
     private String statusMsg;
 
+    @ApiModelProperty(value = "预定人的openId")
+    private String openId;
+
+    @ApiModelProperty(value = "会议室名称")
+    private String roomName;
 }

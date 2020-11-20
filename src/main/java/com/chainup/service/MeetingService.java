@@ -69,4 +69,10 @@ public interface MeetingService {
      * 定时任务更新会议室状态
      */
     void invalidMeetingTime();
+
+    /**
+     * 会议开始前5分钟发送提醒，通过微信订阅发送
+     * 每隔2分钟扫描一次，如果当前时间在会议开始前[4 6]分钟之间，就发送通知
+     */
+    void remindMeeting();
 }

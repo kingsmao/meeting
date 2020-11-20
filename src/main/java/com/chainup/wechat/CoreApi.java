@@ -95,7 +95,7 @@ public class CoreApi extends BaseController {
         log.info("进入到发送模板消息方法");
         String jsonStr = "";
         try {
-            jsonStr = HttpUtil.executeJsonParamHttpPost(CoreUrl.sendsubscribeMessageURL() + "39_nfUXiKJ-K2IlX73TWerVHLj99BhKB9xqOd0Yr57Hlmql-0QtcKOUX4S8sV3qB65tBtX9MxCSXhGSaGTM84RsUYp52z0-KgzTDUDQIU3zM8WkypVfK9gfxPc4tT-m2EeTXLhaSMUfnbl7s2OGCCAgAIATTR", textMsg);
+            jsonStr = HttpUtil.executeJsonParamHttpPost(CoreUrl.sendsubscribeMessageURL() + AccessToken.getAccessToken(), textMsg);
             JSONObject jsonObject = JSONObject.parseObject(jsonStr);
             //System.out.println(new GsonBuilder().serializeNulls().setPrettyPrinting().create().toJson(jsonObject));
             log.info("返回消息:" + jsonStr);

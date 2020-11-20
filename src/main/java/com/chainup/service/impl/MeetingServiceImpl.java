@@ -12,7 +12,9 @@ import com.chainup.dao.RoomMapper;
 import com.chainup.dao.UserMapper;
 import com.chainup.entity.*;
 import com.chainup.service.MeetingService;
+import com.chainup.utils.CoreUrl;
 import com.chainup.utils.DateUtil;
+import com.chainup.wechat.CoreApi;
 import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -256,7 +258,10 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public void invalidMeetingTime() {
-        List<Meeting> meetings = meetingMapper.selectByExample(new MeetingExample());
+        MeetingExample example = new MeetingExample();
+        // 结束的就不扫描了
+        example.createCriteria().andStatusNotEqualTo(MeetingStatus.FINISHED.byteStatus());
+        List<Meeting> meetings = meetingMapper.selectByExample(example);
         if (CollectionUtils.isNotEmpty(meetings)) {
             for (Meeting meeting : meetings) {
                 long startTime = meeting.getBeginTime().getTime();
@@ -271,5 +276,61 @@ public class MeetingServiceImpl implements MeetingService {
                 meetingMapper.updateByPrimaryKey(meeting);
             }
         }
+    }
+
+    @Override
+    public void remindMeeting() {
+        MeetingExample example = new MeetingExample();
+        // 结束的就不扫描了
+        example.createCriteria().andStatusEqualTo(MeetingStatus.NOT_START.byteStatus());
+        List<Meeting> meetings = meetingMapper.selectByExample(example);
+        meetings.forEach(meeting -> {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(meeting.getBeginTime());
+            cal.add(Calendar.MINUTE, 4);
+            long remindLate = cal.getTime().getTime();
+            cal.add(Calendar.MINUTE,2);
+            long remindEarly = cal.getTime().getTime();
+            long now = System.currentTimeMillis();
+
+            if (now >= remindEarly && now < remindLate) {
+                User user = userMapper.selectByPrimaryKey(meeting.getUserId());
+                Room room = roomMapper.selectByPrimaryKey(meeting.getRoomId());
+                Department department = departmentMapper.selectByPrimaryKey(meeting.getDepartmentId());
+                MeetingDto meetingDto = MeetingDto.builder().openId(user.getOpenId())
+                        .meetingSubject(meeting.getName())
+                        .roomName(room.getName())
+                        .timeRange("今天 " + DateUtil.date2StrHourMin(meeting.getBeginTime()) + " - " + DateUtil.date2StrHourMin(meeting.getEndTime()))
+                        .departmentName(department.getDescription())
+                        .userName(user.getUserName()).build();
+                CoreApi.sendTemplateMessage(makeUpsubscribeMessage(meetingDto));
+            }
+        });
+    }
+
+    public String makeUpsubscribeMessage(MeetingDto meetingDto) {
+        return  "{\n" +
+                "\t\"touser\": " + meetingDto.getOpenId() + ",\n" +
+                "\t\"template_id\": " + CoreUrl.getSubscribeMessageTemplateId() + ",\n" +
+                "\t\"miniprogram_state\": \"developer\",\n" +
+                "\t\"lang\": \"zh_CN\",\n" +
+                "\t\"data\": {\n" +
+                "\t\t\"thing1\": {\n" +
+                "\t\t\t\"value\": " + meetingDto.getMeetingSubject() + "\n" +
+                "\t\t},\n" +
+                "\t\t\"thing2\": {\n" +
+                "\t\t\t\"value\": " + meetingDto.getRoomName() + "\n" +
+                "\t\t},\n" +
+                "\t\t\"character_string3\": {\n" +
+                "\t\t\t\"value\": " + meetingDto.getTimeRange() + "\n" +
+                "\t\t},\n" +
+                "\t\t\"thing5\": {\n" +
+                "\t\t\t\"value\": " + meetingDto.getDepartmentName() + "\n" +
+                "\t\t},\n" +
+                "\t\t\"thing4\": {\n" +
+                "\t\t\t\"value\": " + meetingDto.getUserName() +"\n" +
+                "\t\t}\n" +
+                "\t}\n" +
+                "}";
     }
 }
