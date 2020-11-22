@@ -36,7 +36,7 @@ public interface MeetingService {
      *
      * @param reserveMeetingParams 预定会议室参数
      */
-    void reserveMeetingRoom(ReserveMeetingParams reserveMeetingParams);
+    int reserveMeetingRoom(ReserveMeetingParams reserveMeetingParams);
 
     /**
      * 预定页面会议室详情

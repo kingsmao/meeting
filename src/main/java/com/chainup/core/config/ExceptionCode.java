@@ -12,7 +12,13 @@ public enum ExceptionCode {
     /**
      * 内部错误
      */
-    INTERNAL_ERROR(-1, "内部错误");
+    INTERNAL_ERROR(-1, "内部错误"),
+
+
+    MEETING_CONFLICT(2, "会议室冲突"),
+
+
+    USER_NOT_EXIST(3, "用户不存在");
 
 
     private int code;
@@ -23,7 +29,7 @@ public enum ExceptionCode {
         this.msg = msg;
     }
 
-    public static ExceptionCode fromCode(int code) {
+    public static ExceptionCode parseCode(int code) {
         for (ExceptionCode value : values()) {
             if (value.getCode() == code) {
                 return value;

@@ -1,5 +1,6 @@
 package com.chainup.service.impl;
 
+import com.chainup.core.config.ExceptionCode;
 import com.chainup.core.dto.MeetingDto;
 import com.chainup.core.dto.MeetingRoomDto;
 import com.chainup.core.dto.MeetingRoomReserveDto;
@@ -15,6 +16,7 @@ import com.chainup.service.MeetingService;
 import com.chainup.utils.CoreUrl;
 import com.chainup.utils.DateUtil;
 import com.chainup.wechat.CoreApi;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -138,21 +140,29 @@ public class MeetingServiceImpl implements MeetingService {
             myMeetingRoomDtos.add(myMeetingRoomDto);
         }
         if (CollectionUtils.isNotEmpty(myMeetingRoomDtos)) {
+            //按照开始时间排序，最新的在前面
             myMeetingRoomDtos.sort((x1, x2) -> (int) (x2.getBeginTimeStamp() - x1.getBeginTimeStamp()));
         }
         return myMeetingRoomDtos;
     }
 
     @Override
-    public void reserveMeetingRoom(ReserveMeetingParams reserveMeetingParams) {
+    public int reserveMeetingRoom(ReserveMeetingParams reserveMeetingParams) {
         log.info(reserveMeetingParams.toString());
+        if (isMeetingTimeConflict(reserveMeetingParams.getRoomId(),
+                reserveMeetingParams.getBeginTime(),
+                reserveMeetingParams.getEndTime(),
+                reserveMeetingParams.getDelaySwitch())) {
+            return ExceptionCode.MEETING_CONFLICT.getCode();
+        }
+
         //todo 顺延四周开关
         Meeting meeting = new Meeting();
         String openId = reserveMeetingParams.getOpenId();
         User user = userMapper.findUserByOpenId(openId);
         if (Objects.isNull(user)) {
             log.warn("user not exist: openId:{}, reserveMeetingParams:{}", openId, reserveMeetingParams);
-            return;
+            return ExceptionCode.USER_NOT_EXIST.getCode();
         }
         user.setUserName(reserveMeetingParams.getUserName());
         userMapper.updateByPrimaryKey(user);
@@ -166,6 +176,41 @@ public class MeetingServiceImpl implements MeetingService {
         meeting.setDepartmentId(reserveMeetingParams.getDepartmentId());
         meeting.setStatus(MeetingStatus.NOT_START.byteStatus());
         meetingMapper.insertSelective(meeting);
+        return ExceptionCode.SUCCESS.getCode();
+    }
+
+
+    /**
+     * 预定会议室时间是否冲突：有四种情况算是冲突
+     * 如果预定时间是10:10-10:30,那么冲突时间是10:00-10:20 10:15-10:25 10:15-10:40 10:00-11:00有会
+     *
+     * @param roomId      房间id
+     * @param beginTime   预定开始时间
+     * @param endTime     预定结束时间
+     * @param delaySwitch 顺延开关
+     * @return true 预定会议时间有冲突 fasle 时间没有冲突
+     */
+    @VisibleForTesting
+    boolean isMeetingTimeConflict(int roomId, String beginTime, String endTime, boolean delaySwitch) {
+        Date beginDate = DateUtil.parse(beginTime);
+        Date endDate = DateUtil.parse(endTime);
+        //10:00-10:20
+        MeetingExample example1 = new MeetingExample();
+        example1.createCriteria().andRoomIdEqualTo(roomId).andBeginTimeLessThan(beginDate).andEndTimeGreaterThan(beginDate);
+        boolean hasConflictCase1 = Objects.nonNull(meetingMapper.selectOne(example1));
+        //10:15-10:25
+        MeetingExample example2 = new MeetingExample();
+        example2.createCriteria().andRoomIdEqualTo(roomId).andBeginTimeGreaterThan(beginDate).andEndTimeLessThan(endDate);
+        boolean hasConflictCase2 = Objects.nonNull(meetingMapper.selectOne(example2));
+        //10:15-10:40
+        MeetingExample example3 = new MeetingExample();
+        example3.createCriteria().andRoomIdEqualTo(roomId).andBeginTimeLessThan(endDate).andEndTimeGreaterThan(endDate);
+        boolean hasConflictCase3 = Objects.nonNull(meetingMapper.selectOne(example3));
+        //10:00-11:00
+        MeetingExample example4 = new MeetingExample();
+        example4.createCriteria().andRoomIdEqualTo(roomId).andBeginTimeLessThan(beginDate).andEndTimeGreaterThan(endDate);
+        boolean hasConflictCase4 = Objects.nonNull(meetingMapper.selectOne(example4));
+        return hasConflictCase1 || hasConflictCase2 || hasConflictCase3 || hasConflictCase4;
     }
 
     @Override
@@ -295,7 +340,7 @@ public class MeetingServiceImpl implements MeetingService {
             cal.setTime(meeting.getBeginTime());
             cal.add(Calendar.MINUTE, 4);
             long remindLate = cal.getTime().getTime();
-            cal.add(Calendar.MINUTE,2);
+            cal.add(Calendar.MINUTE, 2);
             long remindEarly = cal.getTime().getTime();
             long now = System.currentTimeMillis();
 
@@ -315,7 +360,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     public String makeUpsubscribeMessage(MeetingDto meetingDto) {
-        return  "{\n" +
+        return "{\n" +
                 "\t\"touser\": " + meetingDto.getOpenId() + ",\n" +
                 "\t\"template_id\": " + CoreUrl.getSubscribeMessageTemplateId() + ",\n" +
                 "\t\"miniprogram_state\": \"developer\",\n" +
@@ -334,9 +379,17 @@ public class MeetingServiceImpl implements MeetingService {
                 "\t\t\t\"value\": " + meetingDto.getDepartmentName() + "\n" +
                 "\t\t},\n" +
                 "\t\t\"thing4\": {\n" +
-                "\t\t\t\"value\": " + meetingDto.getUserName() +"\n" +
+                "\t\t\t\"value\": " + meetingDto.getUserName() + "\n" +
                 "\t\t}\n" +
                 "\t}\n" +
                 "}";
+    }
+
+    void deleteUserAllMeeting(String openId) {
+        User user = userMapper.findUserByOpenId(openId);
+        Integer id = user.getId();
+        MeetingExample example = new MeetingExample();
+        example.createCriteria().andUserIdEqualTo(id);
+        meetingMapper.deleteByExample(example);
     }
 }

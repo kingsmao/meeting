@@ -27,7 +27,7 @@ import static com.chainup.core.config.WebConstants.API_STATUS_DEVELOPING;
  */
 @Slf4j
 @RestController
-@Api(value = "MeetingContoller", description = "会议室API 0/6")
+@Api(value = "MeetingContoller", description = "会议室API 6/6")
 public class MeetingContoller extends BaseController {
 
     @Autowired
@@ -88,8 +88,12 @@ public class MeetingContoller extends BaseController {
     @PostMapping("/reserveMeetingRoom")
     @ApiOperation(value = "预定会议室" + API_STATUS_DEVELOPING, httpMethod = "POST")
     public RequestResult<Void> reserveMeetingRoom(@RequestBody ReserveMeetingParams reserveMeetingParams) {
-        meetingService.reserveMeetingRoom(reserveMeetingParams);
-        return success();
+        int result = meetingService.reserveMeetingRoom(reserveMeetingParams);
+        if (ExceptionCode.SUCCESS.getCode() == result) {
+            return success();
+        } else {
+            return error(ExceptionCode.parseCode(result));
+        }
     }
 
 
