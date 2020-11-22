@@ -70,7 +70,7 @@
   <sql id="Base_Column_List" >
     id, name, description, workplace, ctime, mtime
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.chainup.common.exchange.entity.RoomExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.chainup.entity.RoomExample" >
     select
     <if test="distinct" >
       distinct
@@ -97,13 +97,13 @@
     delete from room
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.chainup.common.exchange.entity.RoomExample" >
+  <delete id="deleteByExample" parameterType="com.chainup.entity.RoomExample" >
     delete from room
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.chainup.common.exchange.entity.Room" >
+  <insert id="insert" parameterType="com.chainup.entity.Room" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -112,7 +112,7 @@
     values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{workplace,jdbcType=TINYINT}, 
       #{ctime,jdbcType=TIMESTAMP}, #{mtime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.chainup.common.exchange.entity.Room" >
+  <insert id="insertSelective" parameterType="com.chainup.entity.Room" >
     <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -152,7 +152,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.chainup.common.exchange.entity.RoomExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.chainup.entity.RoomExample" resultType="java.lang.Integer" >
     select count(*) from room
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -196,7 +196,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.chainup.common.exchange.entity.Room" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.chainup.entity.Room" >
     update room
     <set >
       <if test="name != null" >
@@ -217,7 +217,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.chainup.common.exchange.entity.Room" >
+  <update id="updateByPrimaryKey" parameterType="com.chainup.entity.Room" >
     update room
     set name = #{name,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
