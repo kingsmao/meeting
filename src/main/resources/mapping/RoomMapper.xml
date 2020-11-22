@@ -5,6 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="workplace" property="workplace" jdbcType="TINYINT" />
     <result column="ctime" property="ctime" jdbcType="TIMESTAMP" />
     <result column="mtime" property="mtime" jdbcType="TIMESTAMP" />
   </resultMap>
@@ -67,9 +68,9 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, name, description, ctime, mtime
+    id, name, description, workplace, ctime, mtime
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.chainup.entity.RoomExample" >
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.chainup.common.exchange.entity.RoomExample" >
     select
     <if test="distinct" >
       distinct
@@ -96,29 +97,35 @@
     delete from room
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.chainup.entity.RoomExample" >
+  <delete id="deleteByExample" parameterType="com.chainup.common.exchange.entity.RoomExample" >
     delete from room
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.chainup.entity.Room" >
-    insert into room (id, name, description, 
+  <insert id="insert" parameterType="com.chainup.common.exchange.entity.Room" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into room (name, description, workplace, 
       ctime, mtime)
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{workplace,jdbcType=TINYINT}, 
       #{ctime,jdbcType=TIMESTAMP}, #{mtime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.chainup.entity.Room" >
+  <insert id="insertSelective" parameterType="com.chainup.common.exchange.entity.Room" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into room
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="name != null" >
         name,
       </if>
       <if test="description != null" >
         description,
+      </if>
+      <if test="workplace != null" >
+        workplace,
       </if>
       <if test="ctime != null" >
         ctime,
@@ -128,14 +135,14 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="name != null" >
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="workplace != null" >
+        #{workplace,jdbcType=TINYINT},
       </if>
       <if test="ctime != null" >
         #{ctime,jdbcType=TIMESTAMP},
@@ -145,7 +152,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.chainup.entity.RoomExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.chainup.common.exchange.entity.RoomExample" resultType="java.lang.Integer" >
     select count(*) from room
     <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
@@ -163,6 +170,9 @@
       <if test="record.description != null" >
         description = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.workplace != null" >
+        workplace = #{record.workplace,jdbcType=TINYINT},
+      </if>
       <if test="record.ctime != null" >
         ctime = #{record.ctime,jdbcType=TIMESTAMP},
       </if>
@@ -179,13 +189,14 @@
     set id = #{record.id,jdbcType=INTEGER},
       name = #{record.name,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=VARCHAR},
+      workplace = #{record.workplace,jdbcType=TINYINT},
       ctime = #{record.ctime,jdbcType=TIMESTAMP},
       mtime = #{record.mtime,jdbcType=TIMESTAMP}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.chainup.entity.Room" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.chainup.common.exchange.entity.Room" >
     update room
     <set >
       <if test="name != null" >
@@ -193,6 +204,9 @@
       </if>
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="workplace != null" >
+        workplace = #{workplace,jdbcType=TINYINT},
       </if>
       <if test="ctime != null" >
         ctime = #{ctime,jdbcType=TIMESTAMP},
@@ -203,10 +217,11 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.chainup.entity.Room" >
+  <update id="updateByPrimaryKey" parameterType="com.chainup.common.exchange.entity.Room" >
     update room
     set name = #{name,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
+      workplace = #{workplace,jdbcType=TINYINT},
       ctime = #{ctime,jdbcType=TIMESTAMP},
       mtime = #{mtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

@@ -25,6 +25,8 @@ public class MyMeetingRoomDto {
     private String roomName;
     @ApiModelProperty(value = "房间描述")
     private String description;
+    @ApiModelProperty(value = "房间所在职场")
+    private String workSpace;
 
     @ApiModelProperty(value = "meetingId")
     private int meetingId;

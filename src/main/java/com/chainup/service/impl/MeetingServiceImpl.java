@@ -6,6 +6,7 @@ import com.chainup.core.dto.MeetingRoomDto;
 import com.chainup.core.dto.MeetingRoomReserveDto;
 import com.chainup.core.dto.MyMeetingRoomDto;
 import com.chainup.core.enums.MeetingStatus;
+import com.chainup.core.enums.Workplace;
 import com.chainup.core.params.ReserveMeetingParams;
 import com.chainup.dao.DepartmentMapper;
 import com.chainup.dao.MeetingMapper;
@@ -54,6 +55,7 @@ public class MeetingServiceImpl implements MeetingService {
             Integer id = room.getId();
             String description = room.getDescription();
             MeetingRoomDto roomDto = MeetingRoomDto.builder()
+                    .workSpace(Workplace.descriptionByType(room.getWorkplace()))
                     .roomId(id.toString())
                     .roomName(room.getName())
                     .description(description)
@@ -128,6 +130,7 @@ public class MeetingServiceImpl implements MeetingService {
             myMeetingRoomDto.setDateTimeRange(DateUtil.timeDateRange(meeting.getBeginTime(), meeting.getEndTime()));
             myMeetingRoomDto.setRoomId(roomId);
             myMeetingRoomDto.setRoomName(room.getName());
+            myMeetingRoomDto.setWorkSpace(Workplace.descriptionByType(room.getWorkplace()));
             myMeetingRoomDto.setDescription(meeting.getDepartmentId().toString());
             myMeetingRoomDto.setMeetingName(meeting.getName());
             myMeetingRoomDto.setDate(DateUtil.dateWithPattern(meeting.getBeginTime(), "yyyy-MM-dd"));
@@ -230,6 +233,7 @@ public class MeetingServiceImpl implements MeetingService {
         reserveDto.setEndTime(endTime);
         reserveDto.setRoomId(roomId);
         reserveDto.setRoomPersonCount(Splitter.on("|").splitToList(room.getDescription()).get(0));
+        reserveDto.setWorkSpace(Workplace.descriptionByType(room.getWorkplace()));
         reserveDto.setRoomName(room.getName());
         reserveDto.setUserName(user.getNickName());
         MeetingExample example = new MeetingExample();

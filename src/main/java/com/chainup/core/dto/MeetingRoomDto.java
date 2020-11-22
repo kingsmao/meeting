@@ -31,6 +31,8 @@ public class MeetingRoomDto {
     private String roomPersonCount;
     @ApiModelProperty(value = "房间描述")
     private String description;
+    @ApiModelProperty(value = "房间所在职场")
+    private String workSpace;
     @ApiModelProperty(value = "房间已经有的会议")
     private List<MeetingDto> meetingList;
 }

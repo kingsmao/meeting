@@ -317,6 +317,66 @@ public class RoomExample extends AbstractExample {
             return (Criteria) this;
         }
 
+        public Criteria andWorkplaceIsNull() {
+            addCriterion("workplace is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceIsNotNull() {
+            addCriterion("workplace is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceEqualTo(Byte value) {
+            addCriterion("workplace =", value, "workplace");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceNotEqualTo(Byte value) {
+            addCriterion("workplace <>", value, "workplace");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceGreaterThan(Byte value) {
+            addCriterion("workplace >", value, "workplace");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceGreaterThanOrEqualTo(Byte value) {
+            addCriterion("workplace >=", value, "workplace");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceLessThan(Byte value) {
+            addCriterion("workplace <", value, "workplace");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceLessThanOrEqualTo(Byte value) {
+            addCriterion("workplace <=", value, "workplace");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceIn(List<Byte> values) {
+            addCriterion("workplace in", values, "workplace");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceNotIn(List<Byte> values) {
+            addCriterion("workplace not in", values, "workplace");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceBetween(Byte value1, Byte value2) {
+            addCriterion("workplace between", value1, value2, "workplace");
+            return (Criteria) this;
+        }
+
+        public Criteria andWorkplaceNotBetween(Byte value1, Byte value2) {
+            addCriterion("workplace not between", value1, value2, "workplace");
+            return (Criteria) this;
+        }
+
         public Criteria andCtimeIsNull() {
             addCriterion("ctime is null");
             return (Criteria) this;

@@ -23,6 +23,11 @@ public class Room implements Serializable {
     private String description;
 
     /**
+     * 1 蓝海 2 嘉华
+     */
+    private Byte workplace;
+
+    /**
      * 创建时间
      */
     private Date ctime;
@@ -56,6 +61,14 @@ public class Room implements Serializable {
 
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
+    }
+
+    public Byte getWorkplace() {
+        return workplace;
+    }
+
+    public void setWorkplace(Byte workplace) {
+        this.workplace = workplace;
     }
 
     public Date getCtime() {
@@ -93,6 +106,11 @@ public class Room implements Serializable {
 
         public Builder description(String description) {
             obj.description = description;
+            return this;
+        }
+
+        public Builder workplace(Byte workplace) {
+            obj.workplace = workplace;
             return this;
         }
 

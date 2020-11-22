@@ -38,13 +38,4 @@ public interface MeetingMapper extends SqlMapper {
 
     List<Meeting> findByUserId(@Param("userId") Integer userId);
 
-
-    Meeting afterBeginTimeBeforeEndTime(int roomId, String beginTime);
-
-
-    Meeting betweenBeginTimeAndEndTime(int roomId, String beginTime, String endTime);
-
-    Meeting beforeBeginTimeAfterEndTime(int roomId, String endTime);
-
-    Meeting containsBeginTimeAndEndTime(int roomId, String beginTime, String endTime);
 }
