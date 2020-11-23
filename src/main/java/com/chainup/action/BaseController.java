@@ -51,7 +51,14 @@ public abstract class BaseController {
     public final <T> RequestResult<T> error(ExceptionCode e) {
         String requestURI = request.getRequestURI();
         log.error("requestURI:{}, result json: {}", requestURI, e.getMessage());
-        return new RequestResult<>(e.getCode(), e.getMessage());
+        RequestResult<T> rr = new RequestResult<>();
+        Map<String, Object> data = Maps.newHashMap();
+        data.put("data", "FAIL");
+        rr.setCode(e.getCode());
+        rr.setMessage(e.getMessage());
+        rr.setData((T) data);
+        log.info("requestURI:{}, result json: {}", requestURI, JSON.toJSONString(rr));
+        return rr;
     }
 
     /**
