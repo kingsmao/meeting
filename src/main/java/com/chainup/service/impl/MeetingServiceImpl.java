@@ -357,6 +357,7 @@ public class MeetingServiceImpl implements MeetingService {
             long now = System.currentTimeMillis();
 
             if (now >= remindEarly && now < remindLate) {
+                log.info("筛选出合适数据进行组装");
                 User user = userMapper.selectByPrimaryKey(meeting.getUserId());
                 Room room = roomMapper.selectByPrimaryKey(meeting.getRoomId());
                 Department department = departmentMapper.selectByPrimaryKey(meeting.getDepartmentId());

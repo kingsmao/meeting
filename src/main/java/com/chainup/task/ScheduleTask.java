@@ -32,7 +32,7 @@ public class ScheduleTask {
     /**
      * 推送会议即将开始的信息
      */
-    @Scheduled(cron = "0 */2 * * * ?")
+    @Scheduled(cron = "0 */1 * * * ?")
     public void remindMeeting() {
         meetingService.remindMeeting();
     }
