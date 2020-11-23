@@ -45,9 +45,11 @@ public class MeetingContoller extends BaseController {
                                                                    @ApiParam(name = "beginTime", value = "开始时间")
                                                                    @RequestParam(name = "beginTime") String beginTime,
                                                                    @ApiParam(name = "endTime", value = "结束时间")
-                                                                   @RequestParam(name = "endTime") String endTime) {
+                                                                   @RequestParam(name = "endTime") String endTime,
+                                                                   @ApiParam(name = "workplace", value = "职场")
+                                                                   @RequestParam(name = "workplace") int workplace) {
 
-        List<MeetingRoomDto> data = meetingService.availableRoomByTime(date, beginTime + ":00", endTime + ":00");
+        List<MeetingRoomDto> data = meetingService.availableRoomByTime(date, beginTime + ":00", endTime + ":00" , workplace);
         return success(data);
     }
 

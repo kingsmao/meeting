@@ -21,6 +21,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,8 +49,10 @@ public class MeetingServiceImpl implements MeetingService {
 
 
     @Override
-    public List<MeetingRoomDto> availableRoomByTime(String date, String beginTime, String endTime) {
-        List<Room> rooms = roomMapper.selectByExample(new RoomExample());
+    public List<MeetingRoomDto> availableRoomByTime(String date, String beginTime, String endTime, int workplace) {
+        RoomExample roomExample = new RoomExample();
+        roomExample.createCriteria().andWorkplaceEqualTo((byte)workplace);
+        List<Room> rooms = roomMapper.selectByExample(roomExample);
         List<MeetingRoomDto> results = new ArrayList<>();
         for (Room room : rooms) {
             Integer id = room.getId();
@@ -235,7 +238,11 @@ public class MeetingServiceImpl implements MeetingService {
         reserveDto.setRoomPersonCount(Splitter.on("|").splitToList(room.getDescription()).get(0));
         reserveDto.setWorkSpace(Workplace.descriptionByType(room.getWorkplace()));
         reserveDto.setRoomName(room.getName());
-        reserveDto.setUserName(user.getNickName());
+        if (StringUtils.isBlank(user.getUserName())) {
+            reserveDto.setUserName(user.getNickName());
+        }else {
+            reserveDto.setUserName(user.getUserName());
+        }
         MeetingExample example = new MeetingExample();
         //显示当天所有会议室
         Date dateStart = DateUtil.parse(date + " 00:00:00");

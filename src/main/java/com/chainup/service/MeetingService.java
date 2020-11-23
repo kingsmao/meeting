@@ -21,7 +21,7 @@ public interface MeetingService {
      * @param endTime   结束时间
      * @return 会议室列表
      */
-    List<MeetingRoomDto> availableRoomByTime(String date, String beginTime, String endTime);
+    List<MeetingRoomDto> availableRoomByTime(String date, String beginTime, String endTime, int workplace);
 
     /**
      * 通过openid获取我预定的会议室
