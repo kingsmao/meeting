@@ -26,6 +26,7 @@ class MeetingServiceTest {
 
     private static final String CHEN_ZHI_QI = "oFmyS4jjyiihYDmTWql5hEdTIjqA";
     private static final String LI_LI = "oFmyS4vDVqBmLg-31AeJJm8AuzCY";
+    private static final String TEST_USER = "oA-SP4lOq6GOeJp_5OoqyhSjzGBI";
 
     @Autowired
     private MeetingService meetingService;
@@ -42,7 +43,7 @@ class MeetingServiceTest {
 
     @Test
     void getMyMeetingList() {
-        List<MyMeetingRoomDto> myMeetingList = meetingService.getMyMeetingList(CHEN_ZHI_QI);
+        List<MyMeetingRoomDto> myMeetingList = meetingService.getMyMeetingList(TEST_USER);
         System.out.println(myMeetingList);
     }
 

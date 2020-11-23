@@ -143,8 +143,9 @@ public class MeetingServiceImpl implements MeetingService {
             myMeetingRoomDtos.add(myMeetingRoomDto);
         }
         if (CollectionUtils.isNotEmpty(myMeetingRoomDtos)) {
+            //错误的比较方式是将之long转换成int myMeetingRoomDtos.sort((x1, x2) -> (int) (x2.getBeginTimeStamp() - x1.getBeginTimeStamp()));
             //按照开始时间排序，最新的在前面
-            myMeetingRoomDtos.sort((x1, x2) -> (int) (x2.getBeginTimeStamp() - x1.getBeginTimeStamp()));
+            myMeetingRoomDtos.sort(Comparator.comparingLong(MyMeetingRoomDto::getBeginTimeStamp).reversed());
         }
         return myMeetingRoomDtos;
     }
