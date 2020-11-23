@@ -62,7 +62,7 @@ class MeetingServiceTest {
     @Test
     void availableRoomByTime() {
         List<MeetingRoomDto> meetingRoomDtos = meetingService.availableRoomByTime("2020-10-20",
-                "11:00:00", "17:00:00");
+                "11:00:00", "17:00:00",1);
         System.out.println(meetingRoomDtos);
     }
 

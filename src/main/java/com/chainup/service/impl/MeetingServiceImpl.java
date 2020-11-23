@@ -348,16 +348,8 @@ public class MeetingServiceImpl implements MeetingService {
         example.createCriteria().andStatusEqualTo(MeetingStatus.NOT_START.byteStatus());
         List<Meeting> meetings = meetingMapper.selectByExample(example);
         meetings.forEach(meeting -> {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(meeting.getBeginTime());
-            cal.add(Calendar.MINUTE, 4);
-            long remindLate = cal.getTime().getTime();
-            cal.add(Calendar.MINUTE, 2);
-            long remindEarly = cal.getTime().getTime();
-            long now = System.currentTimeMillis();
-
-            if (now >= remindEarly && now < remindLate) {
-                log.info("筛选出合适数据进行组装");
+            if (DateUtil.getMin(new Date(), meeting.getBeginTime()) >= 4 && DateUtil.getMin(new Date(), meeting.getBeginTime()) < 6) {
+                log.info("筛选出合适数据进行组装={}",meeting.toString());
                 User user = userMapper.selectByPrimaryKey(meeting.getUserId());
                 Room room = roomMapper.selectByPrimaryKey(meeting.getRoomId());
                 Department department = departmentMapper.selectByPrimaryKey(meeting.getDepartmentId());
