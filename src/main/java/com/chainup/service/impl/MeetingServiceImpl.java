@@ -358,7 +358,7 @@ public class MeetingServiceImpl implements MeetingService {
                 MeetingDto meetingDto = MeetingDto.builder().openId(user.getOpenId())
                         .meetingSubject(meeting.getName())
                         .roomName(room.getName())
-                        .timeRange("今天 " + DateUtil.date2StrHourMin(meeting.getBeginTime()) + " - " + DateUtil.date2StrHourMin(meeting.getEndTime()))
+                        .timeRange(DateUtil.date2StrHourMin(meeting.getBeginTime()) + " - " + DateUtil.date2StrHourMin(meeting.getEndTime()))
                         .departmentName(department.getDescription())
                         .userName(user.getUserName()).build();
                 CoreApi.sendTemplateMessage(makeUpsubscribeMessage(meetingDto));
@@ -371,7 +371,7 @@ public class MeetingServiceImpl implements MeetingService {
         data.put("touser",meetingDto.getOpenId());
         data.put("template_id",(CoreUrl.getSubscribeMessageTemplateId()));
         data.put("miniprogram_state","developer");
-        data.put("lang","zh");
+        data.put("lang","zh_CN");
         Map<String, Object> innerDate = Maps.newHashMap();
         Map<String, Object> thingDate1 = Maps.newHashMap();
         Map<String, Object> valueDate1 = Maps.newHashMap();
