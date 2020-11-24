@@ -386,17 +386,17 @@ public class MeetingServiceImpl implements MeetingService {
 
         Map<String, Object> thingDate3 = Maps.newHashMap();
         Map<String, Object> valueDate3 = Maps.newHashMap();
-        valueDate3.put("value", "今天 " + meetingDto.getTimeRange());
+        valueDate3.put("value", meetingDto.getTimeRange());
         innerDate.put("character_string3", valueDate3);
 
         Map<String, Object> thingDate4 = Maps.newHashMap();
         Map<String, Object> valueDate4 = Maps.newHashMap();
-        valueDate4.put("value", meetingDto.getDepartmentName());
+        valueDate4.put("value", meetingDto.getUserName());
         innerDate.put("thing4", valueDate4);
 
         Map<String, Object> thingDate5 = Maps.newHashMap();
         Map<String, Object> valueDate5 = Maps.newHashMap();
-        valueDate5.put("value", meetingDto.getUserName());
+        valueDate5.put("value", meetingDto.getDepartmentName());
         innerDate.put("thing5", valueDate5);
         data.put("data", innerDate);
 
