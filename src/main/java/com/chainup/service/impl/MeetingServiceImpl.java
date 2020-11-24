@@ -1,5 +1,6 @@
 package com.chainup.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.chainup.core.config.ExceptionCode;
 import com.chainup.core.dto.MeetingDto;
 import com.chainup.core.dto.MeetingRoomDto;
@@ -19,6 +20,7 @@ import com.chainup.utils.DateUtil;
 import com.chainup.wechat.CoreApi;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -365,29 +367,45 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     public String makeUpsubscribeMessage(MeetingDto meetingDto) {
-        return "{\n" +
-                "\t\"touser\": " + meetingDto.getOpenId() + ",\n" +
-                "\t\"template_id\": " + CoreUrl.getSubscribeMessageTemplateId() + ",\n" +
-                "\t\"miniprogram_state\": \"developer\",\n" +
-                "\t\"lang\": \"zh_CN\",\n" +
-                "\t\"data\": {\n" +
-                "\t\t\"thing1\": {\n" +
-                "\t\t\t\"value\": " + meetingDto.getMeetingSubject() + "\n" +
-                "\t\t},\n" +
-                "\t\t\"thing2\": {\n" +
-                "\t\t\t\"value\": " + meetingDto.getRoomName() + "\n" +
-                "\t\t},\n" +
-                "\t\t\"character_string3\": {\n" +
-                "\t\t\t\"value\": " + meetingDto.getTimeRange() + "\n" +
-                "\t\t},\n" +
-                "\t\t\"thing5\": {\n" +
-                "\t\t\t\"value\": " + meetingDto.getDepartmentName() + "\n" +
-                "\t\t},\n" +
-                "\t\t\"thing4\": {\n" +
-                "\t\t\t\"value\": " + meetingDto.getUserName() + "\n" +
-                "\t\t}\n" +
-                "\t}\n" +
-                "}";
+        Map<String, Object> data = Maps.newHashMap();
+        data.put("touser",meetingDto.getOpenId());
+        data.put("template_id",(CoreUrl.getSubscribeMessageTemplateId()));
+        data.put("miniprogram_state","developer");
+        data.put("lang","zh");
+        Map<String, Object> innerDate = Maps.newHashMap();
+        Map<String, Object> thingDate1 = Maps.newHashMap();
+        Map<String, Object> valueDate1 = Maps.newHashMap();
+        valueDate1.put("value", meetingDto.getMeetingSubject());
+        thingDate1.put("thing1", valueDate1);
+        innerDate.put("thing1", thingDate1);
+
+        Map<String, Object> thingDate2 = Maps.newHashMap();
+        Map<String, Object> valueDate2 = Maps.newHashMap();
+        valueDate2.put("value", meetingDto.getRoomName());
+        thingDate2.put("thing2", valueDate2);
+        innerDate.put("thing2", thingDate2);
+
+
+        Map<String, Object> thingDate3 = Maps.newHashMap();
+        Map<String, Object> valueDate3 = Maps.newHashMap();
+        valueDate3.put("value", "今天 " + meetingDto.getTimeRange());
+        thingDate3.put("thing3", valueDate3);
+        innerDate.put("character_string3", thingDate3);
+
+        Map<String, Object> thingDate4 = Maps.newHashMap();
+        Map<String, Object> valueDate4 = Maps.newHashMap();
+        valueDate4.put("value", meetingDto.getDepartmentName());
+        thingDate4.put("thing4", valueDate4);
+        innerDate.put("thing4", thingDate4);
+
+        Map<String, Object> thingDate5 = Maps.newHashMap();
+        Map<String, Object> valueDate5 = Maps.newHashMap();
+        valueDate5.put("value", meetingDto.getUserName());
+        thingDate5.put("thing5", valueDate5);
+        innerDate.put("thing5", thingDate5);
+        data.put("data", innerDate);
+
+        return JSON.toJSONString(data);
     }
 
     void deleteUserAllMeeting(String openId) {

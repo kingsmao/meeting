@@ -1,11 +1,14 @@
 package com.chainup.wechat;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chainup.action.BaseController;
 import com.chainup.core.config.RequestResult;
 import com.chainup.core.domain.AccessToken;
+import com.chainup.core.dto.MeetingDto;
 import com.chainup.service.UserService;
 import com.chainup.utils.CoreUrl;
+import com.chainup.utils.DateUtil;
 import com.chainup.utils.HttpUtil;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
@@ -95,6 +98,7 @@ public class CoreApi extends BaseController {
         log.info("进入到发送模板消息方法");
         String jsonStr = "";
         try {
+            log.info("发送消息:" + textMsg);
             jsonStr = HttpUtil.executeJsonParamHttpPost(CoreUrl.sendsubscribeMessageURL() + AccessToken.getAccessToken(), textMsg);
             JSONObject jsonObject = JSONObject.parseObject(jsonStr);
             //System.out.println(new GsonBuilder().serializeNulls().setPrettyPrinting().create().toJson(jsonObject));
@@ -108,9 +112,56 @@ public class CoreApi extends BaseController {
         }
         return "fail";
     }
-/*
-    public static void main(String[] args) {
-        String msg = "{\"touser\":\"oA-SP4lOq6GOeJp_5OoqyhSjzGBI\",\"template_id\":\"g4llUD-SEs_CT8VsiIjDnRJ4wj7pKbnSD6nxIoS2iyY\",\"miniprogram_state\":\"developer\",\"lang\":\"zh_CN\",\"data\":{\"thing1\":{\"value\":\"339208499\"},\"thing2\":{\"value\":\"2015年01月05日\"},\"character_string3\":{\"value\":\"aaaaaaaaaaaaaaa\"},\"thing5\":{\"value\":\"广州市新港中路397号\"},\"thing4\":{\"value\":\"广州市新港中路397号\"}}}";
-        sendTemplateMessage(msg);
+/*    public static void main(String[] args) {
+        MeetingDto meetingDto = MeetingDto.builder().openId("oA-SP4lOq6GOeJp_5OoqyhSjzGBI")
+                .meetingSubject("需求评审")
+                .roomName("香港")
+                .timeRange("10:20 - 11:30")
+                .departmentName("saas")
+                .userName("大力出奇迹").build();
+        CoreApi.sendTemplateMessage(makeUpsubscribeMessage(meetingDto));
+        //System.out.println(makeUpsubscribeMessage(meetingDto));
     }*/
+
+    public static String makeUpsubscribeMessage(MeetingDto meetingDto) {
+        Map<String, Object> data = Maps.newHashMap();
+        data.put("touser",meetingDto.getOpenId());
+        data.put("template_id",(CoreUrl.getSubscribeMessageTemplateId()));
+        data.put("miniprogram_state","developer");
+        data.put("lang","zh");
+        Map<String, Object> innerDate = Maps.newHashMap();
+        Map<String, Object> thingDate1 = Maps.newHashMap();
+        Map<String, Object> valueDate1 = Maps.newHashMap();
+        valueDate1.put("value", meetingDto.getMeetingSubject());
+        thingDate1.put("thing1", valueDate1);
+        innerDate.put("thing1", thingDate1);
+
+        Map<String, Object> thingDate2 = Maps.newHashMap();
+        Map<String, Object> valueDate2 = Maps.newHashMap();
+        valueDate2.put("value", meetingDto.getRoomName());
+        thingDate2.put("thing2", valueDate2);
+        innerDate.put("thing2", thingDate2);
+
+
+        Map<String, Object> thingDate3 = Maps.newHashMap();
+        Map<String, Object> valueDate3 = Maps.newHashMap();
+        valueDate3.put("value", "今天 " + meetingDto.getTimeRange());
+        thingDate3.put("thing3", valueDate3);
+        innerDate.put("character_string3", thingDate3);
+
+        Map<String, Object> thingDate4 = Maps.newHashMap();
+        Map<String, Object> valueDate4 = Maps.newHashMap();
+        valueDate4.put("value", meetingDto.getDepartmentName());
+        thingDate4.put("thing4", valueDate4);
+        innerDate.put("thing4", thingDate4);
+
+        Map<String, Object> thingDate5 = Maps.newHashMap();
+        Map<String, Object> valueDate5 = Maps.newHashMap();
+        valueDate5.put("value", meetingDto.getUserName());
+        thingDate5.put("thing5", valueDate5);
+        innerDate.put("thing5", thingDate5);
+        data.put("data", innerDate);
+
+        return JSON.toJSONString(data);
+    }
 }
