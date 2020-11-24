@@ -376,33 +376,28 @@ public class MeetingServiceImpl implements MeetingService {
         Map<String, Object> thingDate1 = Maps.newHashMap();
         Map<String, Object> valueDate1 = Maps.newHashMap();
         valueDate1.put("value", meetingDto.getMeetingSubject());
-        thingDate1.put("thing1", valueDate1);
-        innerDate.put("thing1", thingDate1);
+        innerDate.put("thing1", valueDate1);
 
         Map<String, Object> thingDate2 = Maps.newHashMap();
         Map<String, Object> valueDate2 = Maps.newHashMap();
         valueDate2.put("value", meetingDto.getRoomName());
-        thingDate2.put("thing2", valueDate2);
-        innerDate.put("thing2", thingDate2);
+        innerDate.put("thing2", valueDate2);
 
 
         Map<String, Object> thingDate3 = Maps.newHashMap();
         Map<String, Object> valueDate3 = Maps.newHashMap();
         valueDate3.put("value", "今天 " + meetingDto.getTimeRange());
-        thingDate3.put("thing3", valueDate3);
-        innerDate.put("character_string3", thingDate3);
+        innerDate.put("character_string3", valueDate3);
 
         Map<String, Object> thingDate4 = Maps.newHashMap();
         Map<String, Object> valueDate4 = Maps.newHashMap();
         valueDate4.put("value", meetingDto.getDepartmentName());
-        thingDate4.put("thing4", valueDate4);
-        innerDate.put("thing4", thingDate4);
+        innerDate.put("thing4", valueDate4);
 
         Map<String, Object> thingDate5 = Maps.newHashMap();
         Map<String, Object> valueDate5 = Maps.newHashMap();
         valueDate5.put("value", meetingDto.getUserName());
-        thingDate5.put("thing5", valueDate5);
-        innerDate.put("thing5", thingDate5);
+        innerDate.put("thing5", valueDate5);
         data.put("data", innerDate);
 
         return JSON.toJSONString(data);
