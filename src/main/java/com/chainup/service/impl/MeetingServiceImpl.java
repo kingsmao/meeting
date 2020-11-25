@@ -290,8 +290,8 @@ public class MeetingServiceImpl implements MeetingService {
         myMeetingRoomDto.setStatus(meeting.getStatus().toString());
         myMeetingRoomDto.setStatusMsg(MeetingStatus.descriptionByStatus(meeting.getStatus()));
         myMeetingRoomDto.setMeetingId(meetingId);
-        if (meeting.getBeginTime().getTime() <= System.currentTimeMillis()) {
-            //只是没开始才开始删除
+        if (meeting.getStatus() != 2) {
+            //未开始，进行中的会议都可以取消
             myMeetingRoomDto.setCanDelete(false);
         }
         myMeetingRoomDto.setDateTimeRange(DateUtil.timeDateRange(meeting.getBeginTime(), meeting.getEndTime()));
