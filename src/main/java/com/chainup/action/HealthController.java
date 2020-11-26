@@ -15,6 +15,6 @@ public class HealthController extends BaseController {
 
     @GetMapping("/health")
     public RequestResult<String> health() {
-        return success("Server Health");
+        return success("Server Health 大力哥！");
     }
 }
