@@ -20,12 +20,12 @@ public class HealthController extends BaseController {
 
 
     @GetMapping("/hack")
-    public String health2() {
+    public String hack() {
         log.debug("{}", System.currentTimeMillis());
         log.info("I am health");
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < 1000000000; i++) {
-            builder.append("alibababababbababab");
+        for (int i = 0; i < 10000000; i++) {
+            builder.append("alibababa");
         }
         return builder.toString();
     }
