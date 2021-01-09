@@ -7,10 +7,8 @@ import com.chainup.core.params.ReserveMeetingParams;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
@@ -20,7 +18,6 @@ import java.util.List;
  * @see
  * @since
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest
 class MeetingServiceTest {
 
@@ -62,7 +59,7 @@ class MeetingServiceTest {
     @Test
     void availableRoomByTime() {
         List<MeetingRoomDto> meetingRoomDtos = meetingService.availableRoomByTime("2020-10-20",
-                "11:00:00", "17:00:00",1);
+                "11:00:00", "17:00:00", 1);
         System.out.println(meetingRoomDtos);
     }
 
