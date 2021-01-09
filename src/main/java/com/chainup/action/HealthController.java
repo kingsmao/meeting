@@ -17,4 +17,17 @@ public class HealthController extends BaseController {
     public RequestResult<String> health() {
         return success("Server Health 大力哥！");
     }
+
+
+    @GetMapping("/hack")
+    public String health2() {
+        log.debug("{}", System.currentTimeMillis());
+        log.info("I am health");
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < 1000000000; i++) {
+            builder.append("alibababababbababab");
+        }
+        return builder.toString();
+    }
+
 }
