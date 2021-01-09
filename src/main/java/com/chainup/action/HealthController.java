@@ -24,7 +24,7 @@ public class HealthController extends BaseController {
         log.debug("{}", System.currentTimeMillis());
         log.info("I am health");
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < 100000000; i++) {
+        for (int i = 0; i < 100000000 / 2; i++) {
             builder.append("alibabababa");
         }
         return builder.toString();
